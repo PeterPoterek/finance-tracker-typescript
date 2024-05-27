@@ -2,7 +2,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 
 const FinancialList = () => {
   return (
-    <div className="m-auto w-[1000px]">
+    <div className="">
       <Table>
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>

@@ -10,7 +10,7 @@ const Dashboard = () => {
     <div>
       <h1>Welcome {user?.firstName}!</h1>
 
-      <div>
+      <div className="m-auto max-w-[1000px]">
         <FinancialForm />
         <FinancialList />
       </div>
