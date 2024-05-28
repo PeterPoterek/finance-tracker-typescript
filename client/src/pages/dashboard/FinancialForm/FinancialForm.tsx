@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+// import { Textarea } from "@/components/ui/textarea";
 
 import { formSchema, FormSchemaType } from "@/services/schemas/formSchemas";
 
-const FinancialForm: React.FC = () => {
+const FinancialForm = () => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,9 +32,9 @@ const FinancialForm: React.FC = () => {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter description detials" {...field} />
+                  <Input placeholder="Enter description details" {...field} />
                 </FormControl>
-                <FormDescription>Please description detials of your income/expense</FormDescription>
+                <FormDescription>Please description details of your income/expense</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
