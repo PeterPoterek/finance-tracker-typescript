@@ -1,8 +1,9 @@
 import { z } from "zod";
 
 export const formSchema = z.object({
-  description: z.string().min(1, "Description is required"),
-  // amount: z.number().min(1, "Amount must be greater than zero"),
+  description: z.string().min(1, "Required"),
+  amount: z.number().min(1, "Required"),
+
   // type: z.enum(["income", "expense"]),
 });
 

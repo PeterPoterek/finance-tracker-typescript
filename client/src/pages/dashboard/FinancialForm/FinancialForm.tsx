@@ -19,6 +19,7 @@ const FinancialForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       description: "",
+      amount: 0,
     },
   });
 
@@ -35,7 +36,27 @@ const FinancialForm = () => {
                 <FormControl>
                   <Input placeholder="Enter description details" {...field} />
                 </FormControl>
-                <FormDescription>Please description details of Your income/expense.</FormDescription>
+                <FormDescription>Please description details of your income/expense.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="amount"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Amount</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="Enter amount"
+                    {...field}
+                    value={field.value || ""}
+                    onChange={(e) => field.onChange(Number(e.target.value))}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
