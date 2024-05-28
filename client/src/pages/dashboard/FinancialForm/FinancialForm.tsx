@@ -1,4 +1,3 @@
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
@@ -7,25 +6,14 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  amount: z.number().min(1, {
-    message: "Amount must be at least 1.",
-  }),
-  description: z.string().optional(),
-});
-
-type FormSchemaType = z.infer<typeof formSchema>;
+import { formSchema, FormSchemaType } from "@/services/schemas/formSchemas";
 
 const FinancialForm: React.FC = () => {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      amount: 0,
       description: "",
+      amount: 0,
     },
   });
 
@@ -39,14 +27,14 @@ const FinancialForm: React.FC = () => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your username" {...field} />
+                  <Input placeholder="Enter description detials" {...field} />
                 </FormControl>
-                <FormDescription>This is your public display name.</FormDescription>
+                <FormDescription>Please description detials of your income/expense</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -65,19 +53,6 @@ const FinancialForm: React.FC = () => {
                     value={field.value || ""}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea placeholder="Enter description" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
