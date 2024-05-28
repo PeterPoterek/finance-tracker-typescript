@@ -1,23 +1,26 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-// import { Textarea } from "@/components/ui/textarea";
+
 import { formSchema, FormSchemaType } from "@/services/schemas/formSchemas";
 
 const FinancialForm = () => {
-  const form = useForm<FormSchemaType>({
+  const onSubmit = (values: FormSchemaType) => {
+    console.log(values);
+
+    form.reset();
+  };
+
+  const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       description: "",
-      amount: 0,
     },
   });
-
-  const onSubmit = (values: FormSchemaType) => {
-    console.log(values);
-  };
 
   return (
     <div className="pt-[3.5rem] pb-[3.5rem]">
@@ -32,36 +35,11 @@ const FinancialForm = () => {
                 <FormControl>
                   <Input placeholder="Enter description details" {...field} />
                 </FormControl>
-                <FormDescription>Please description details of your income/expense.</FormDescription>
+                <FormDescription>Please description details of Your income/expense.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="amount"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Amount</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="Enter amount"
-                    {...field}
-                    value={field.value || ""}
-                    onChange={(e) => {
-                      const value = Number(e.target.value);
-                      if (value >= 0) {
-                        field.onChange(value);
-                      }
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           <Button type="submit">Submit</Button>
         </form>
       </Form>
