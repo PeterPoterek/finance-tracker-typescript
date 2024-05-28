@@ -1,11 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 // import { Textarea } from "@/components/ui/textarea";
-
 import { formSchema, FormSchemaType } from "@/services/schemas/formSchemas";
 
 const FinancialForm = () => {
@@ -34,7 +32,7 @@ const FinancialForm = () => {
                 <FormControl>
                   <Input placeholder="Enter description details" {...field} />
                 </FormControl>
-                <FormDescription>Please description details of your income/expense</FormDescription>
+                <FormDescription>Please description details of your income/expense.</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -51,13 +49,19 @@ const FinancialForm = () => {
                     placeholder="Enter amount"
                     {...field}
                     value={field.value || ""}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    onChange={(e) => {
+                      const value = Number(e.target.value);
+                      if (value >= 0) {
+                        field.onChange(value);
+                      }
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <Button type="submit">Submit</Button>
         </form>
       </Form>

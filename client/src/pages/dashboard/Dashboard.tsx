@@ -8,7 +8,10 @@ const Dashboard = () => {
 
   return (
     <div>
-      <h1>Welcome {user?.firstName}!</h1>
+      <div>
+        <h1>Welcome {user?.firstName}!</h1>
+        <p>Add Your Income/Expense</p>
+      </div>
 
       <div className="m-auto max-w-[1000px]">
         <FinancialForm />
