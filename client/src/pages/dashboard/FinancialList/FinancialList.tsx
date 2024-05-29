@@ -1,5 +1,5 @@
 import { Columns } from "./Columns.tsx";
-import { DataTable } from "./data-table.tsx";
+import { DataTable } from "./DataTable.tsx";
 
 import { useState, useEffect } from "react";
 import axios from "axios";

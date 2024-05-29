@@ -36,9 +36,13 @@ import {
   FinancialEntry,
 } from "@/services/schemas/formSchemas";
 
+//#region Datepicker imports
+
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+
+//#endregion
 
 const FinancialForm = () => {
   const onSubmit = (values: FinancialEntry) => {
@@ -60,33 +64,42 @@ const FinancialForm = () => {
   return (
     <div className="pt-[3.5rem] pb-[3.5rem]">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="grid grid-cols-2 gap-6"
+        >
           <FormField
             control={form.control}
             name="description"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter description details" {...field} />
+                  <Input
+                    className="w-full"
+                    placeholder="Enter description details"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
-                  Please description details of your income/expense.
+                  Please enter description details of your income/expense.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="amount"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Amount</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
                     placeholder="Enter amount"
+                    className="w-full"
                     {...field}
                     min={0}
                     value={field.value || ""}
@@ -97,18 +110,19 @@ const FinancialForm = () => {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="transactionCategory"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="col-span-1">
                 <FormLabel>Transaction Category</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
-                    <SelectTrigger>
+                    <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a transaction category" />
                     </SelectTrigger>
                   </FormControl>
@@ -129,7 +143,7 @@ const FinancialForm = () => {
             control={form.control}
             name="createdAt"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
+              <FormItem className="col-span-1">
                 <FormLabel>Date of Transaction</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -137,7 +151,7 @@ const FinancialForm = () => {
                       <Button
                         variant={"outline"}
                         className={cn(
-                          "w-[240px] pl-3 text-left font-normal",
+                          "w-full text-left font-normal",
                           !field.value && "text-muted-foreground"
                         )}
                       >
@@ -170,7 +184,11 @@ const FinancialForm = () => {
             )}
           />
 
-          <Button type="submit">Submit</Button>
+          <div className="col-span-2 flex justify-center">
+            <Button type="submit" className="w-full max-w-xs">
+              Submit
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
