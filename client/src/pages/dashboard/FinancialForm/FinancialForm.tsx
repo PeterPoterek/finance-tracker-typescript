@@ -23,17 +23,20 @@ import {
 } from "@/components/ui/select";
 //#endregion
 
-import { formSchema, FormSchemaType } from "@/services/schemas/formSchemas";
+import {
+  financialSchema,
+  FinancialEntry,
+} from "@/services/schemas/formSchemas";
 
 const FinancialForm = () => {
-  const onSubmit = (values: FormSchemaType) => {
+  const onSubmit = (values: FinancialEntry) => {
     console.log(values);
 
     form.reset();
   };
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof financialSchema>>({
+    resolver: zodResolver(financialSchema),
     defaultValues: {
       description: "",
       amount: 0,
