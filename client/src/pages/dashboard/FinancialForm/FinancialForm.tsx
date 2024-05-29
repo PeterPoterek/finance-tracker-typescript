@@ -2,9 +2,26 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+//#region  shadcn imports
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+//#endregion
 
 import { formSchema, FormSchemaType } from "@/services/schemas/formSchemas";
 
@@ -20,6 +37,7 @@ const FinancialForm = () => {
     defaultValues: {
       description: "",
       amount: 0,
+      transactionCategory: undefined,
     },
   });
 
@@ -36,7 +54,9 @@ const FinancialForm = () => {
                 <FormControl>
                   <Input placeholder="Enter description details" {...field} />
                 </FormControl>
-                <FormDescription>Please description details of your income/expense.</FormDescription>
+                <FormDescription>
+                  Please description details of your income/expense.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -62,6 +82,34 @@ const FinancialForm = () => {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="transactionCategory"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Transaction Category</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a transaction category" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="income">Income</SelectItem>
+                    <SelectItem value="expense">Expense</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Choose a category to classify this transaction.
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <Button type="submit">Submit</Button>
         </form>
       </Form>
