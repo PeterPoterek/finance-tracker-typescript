@@ -1,23 +1,17 @@
 import { ColumnDef } from "@tanstack/react-table";
+import { FinancialEntry } from "../../../services/schemas/formSchemas.ts";
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
+export const Columns: ColumnDef<FinancialEntry>[] = [
   {
-    accessorKey: "status",
-    header: "Status",
-  },
-  {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "description",
+    header: "Description",
   },
   {
     accessorKey: "amount",
     header: "Amount",
+  },
+  {
+    accessorKey: "transactionCategory",
+    header: "Category",
   },
 ];
