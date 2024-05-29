@@ -4,16 +4,27 @@ import { DataTable } from "./data-table.tsx";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import { FinancialEntry } from "@/services/schemas/formSchemas";
+
 const FinancialList = () => {
-  const [placeholderData, setPlaceholderData] = useState([]);
+  const [placeholderData, setPlaceholderData] = useState<FinancialEntry[]>([]);
 
   const fetchPlaceholderData = async () => {
     try {
       const response = await axios.get(
         "https://665791ff5c36170526454459.mockapi.io/api/user/transactions"
       );
-      setPlaceholderData(response.data);
+
+      // empty arr to test table without data
       // setPlaceholderData([]);
+
+      //zod validation
+      // const validatedData = response.data.map((item: any) =>
+      //   financialSchema.parse(item)
+      // );
+      // setPlaceholderData(validatedData);
+
+      setPlaceholderData(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -21,7 +32,7 @@ const FinancialList = () => {
 
   useEffect(() => {
     fetchPlaceholderData();
-  }, [placeholderData]);
+  }, []);
 
   return <DataTable columns={Columns} data={placeholderData} />;
 };
