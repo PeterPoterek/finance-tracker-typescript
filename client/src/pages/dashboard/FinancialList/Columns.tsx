@@ -9,6 +9,11 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
+    cell: ({ row }) => {
+      const amount = row.getValue("amount");
+      const amountWithCurrency = `${amount} USD`;
+      return <div className="font-medium">{amountWithCurrency}</div>;
+    },
   },
   {
     accessorKey: "transactionCategory",

@@ -13,6 +13,7 @@ const FinancialList = () => {
         "https://665791ff5c36170526454459.mockapi.io/api/user/transactions"
       );
       setPlaceholderData(response.data);
+      // setPlaceholderData([]);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
