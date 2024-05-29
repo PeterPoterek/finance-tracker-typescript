@@ -53,6 +53,7 @@ const FinancialForm = () => {
                     type="number"
                     placeholder="Enter amount"
                     {...field}
+                    min={0}
                     value={field.value || ""}
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
