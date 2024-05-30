@@ -45,7 +45,7 @@ const Navbar = () => {
 
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="link" className="text-base">
+                <Button variant="linkSecondary" className="text-base">
                   Logout
                 </Button>
               </AlertDialogTrigger>
