@@ -103,9 +103,9 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             <DropdownMenuItem onClick={() => handleClick(transaction)}>
               Log out transaction
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuItem>Edit</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
