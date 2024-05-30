@@ -21,10 +21,10 @@ type Theme = "light" | "dark";
 
 const Navbar = () => {
   const { setTheme } = useTheme();
-  const [currentTheme, setCurrentTheme] = useState<Theme>("dark");
+  const [currentTheme, setCurrentTheme] = useState<Theme>("light");
 
   const toggleTheme = () => {
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    const newTheme = currentTheme === "light" ? "dark" : "light";
     setCurrentTheme(newTheme);
     setTheme(newTheme);
   };
