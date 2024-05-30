@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   AlertDialog,
@@ -13,12 +15,25 @@ import {
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 
+import { useTheme } from "@/components/ui/theme-provider";
+
+type Theme = "light" | "dark";
+
 const Navbar = () => {
+  const { setTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState<Theme>("dark");
+
+  const toggleTheme = () => {
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    setCurrentTheme(newTheme);
+    setTheme(newTheme);
+  };
+
   return (
     <>
       <div className="fixed flex justify-end  w-full m-auto p-2.5 pl-10 pr-10 ">
         <div className="flex justify-center items-center gap-5 ">
-          <Switch />
+          <Switch onCheckedChange={toggleTheme} />
 
           <p>User name</p>
 
