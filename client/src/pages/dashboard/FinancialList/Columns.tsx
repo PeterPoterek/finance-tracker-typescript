@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
+
 import { FinancialEntry } from "../../../services/schemas/formSchemas";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,7 +20,17 @@ const handleClick = (transaction: FinancialEntry) => {
 export const Columns: ColumnDef<FinancialEntry>[] = [
   {
     accessorKey: "description",
-    header: "Description",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Description
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "amount",
