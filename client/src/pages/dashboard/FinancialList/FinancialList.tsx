@@ -34,7 +34,11 @@ const FinancialList = () => {
     fetchPlaceholderData();
   }, []);
 
-  return <DataTable columns={Columns} data={placeholderData} />;
+  return (
+    <div className="pb-10">
+      <DataTable columns={Columns} data={placeholderData} />
+    </div>
+  );
 };
 
 export default FinancialList;
