@@ -16,8 +16,8 @@ import { Switch } from "@/components/ui/switch";
 const Navbar = () => {
   return (
     <>
-      <div className="fixed flex justify-end items-center w-full m-auto p-2.5">
-        <div className="flex justify-center items-center gap-5">
+      <div className="fixed flex justify-end  w-full m-auto p-2.5 pl-10 pr-10 ">
+        <div className="flex justify-center items-center gap-5 ">
           <Switch />
 
           <p>User name</p>
@@ -36,9 +36,9 @@ const Navbar = () => {
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                  <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure You want to log out?
+                    Are you sure you want to log out?
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
