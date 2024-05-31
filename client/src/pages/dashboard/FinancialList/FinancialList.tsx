@@ -29,7 +29,12 @@ const FinancialList = () => {
         type: "Income",
       }));
 
-      const combinedData = [...expenses, ...incomes];
+      const combinedData = [...expenses, ...incomes].sort((a, b) => {
+        const dateA = new Date(a.createdAt).getTime();
+        const dateB = new Date(b.createdAt).getTime();
+        return dateB - dateA;
+      });
+
       setFinancialData(combinedData);
     } catch (error) {
       console.error("Error fetching data:", error);
