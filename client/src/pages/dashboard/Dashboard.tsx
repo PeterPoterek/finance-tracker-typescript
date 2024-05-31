@@ -11,11 +11,15 @@ const Dashboard = () => {
         <RadioGroup className="flex" defaultValue="option-one">
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option-one" id="option-one" />
-            <Label htmlFor="option-one">Expenses</Label>
+            <Label htmlFor="option-one" className="text-lg">
+              Expenses
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="option-two" id="option-two" />
-            <Label htmlFor="option-two">Incomes</Label>
+            <Label htmlFor="option-two" className="text-lg">
+              Incomes
+            </Label>
           </div>
         </RadioGroup>
       </div>

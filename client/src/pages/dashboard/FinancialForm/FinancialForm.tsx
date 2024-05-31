@@ -62,7 +62,7 @@ const FinancialForm = () => {
   });
 
   return (
-    <div className="pt-[3.5rem] pb-[3.5rem]">
+    <div className="pt-[1rem] pb-[3.5rem]">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
