@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-//#region  shadcn imports
+//#region shadcn imports
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -28,7 +28,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-
 //#endregion
 
 import {
@@ -37,14 +36,16 @@ import {
 } from "@/services/schemas/formSchemas";
 
 //#region Datepicker imports
-
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-
 //#endregion
 
-const FinancialForm = () => {
+interface FinancialFormProps {
+  view: "expense" | "income";
+}
+
+const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   const onSubmit = (values: FinancialEntry) => {
     console.log(values);
 
@@ -56,7 +57,7 @@ const FinancialForm = () => {
     defaultValues: {
       description: "",
       amount: 0,
-      transactionCategory: undefined,
+      transactionCategory: "",
       createdAt: undefined,
     },
   });
@@ -77,12 +78,12 @@ const FinancialForm = () => {
                 <FormControl>
                   <Input
                     className="w-full"
-                    placeholder="Enter description details"
+                    placeholder={`Enter ${view} description details`}
                     {...field}
                   />
                 </FormControl>
                 <FormDescription>
-                  Please enter description details of your income/expense.
+                  Please enter description details of your {view}.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -127,8 +128,9 @@ const FinancialForm = () => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="income">Income</SelectItem>
-                    <SelectItem value="expense">Expense</SelectItem>
+                    {/* Categories will be fetched from db later */}
+                    <SelectItem value="category-1">Category 1</SelectItem>
+                    <SelectItem value="category-2">Category 2</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormDescription>

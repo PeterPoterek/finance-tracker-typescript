@@ -5,7 +5,7 @@ export const financialSchema = z.object({
   description: z.string().min(1, "Required"),
   amount: z.number().min(1, "Required"),
 
-  transactionCategory: z.enum(["income", "expense"]),
+  transactionCategory: z.string().min(1, "Required"),
   createdAt: z.date(),
 });
 

@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import FinancialForm from "./FinancialForm/FinancialForm";
 import FinancialList from "./FinancialList/FinancialList";
 
@@ -5,19 +7,34 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const Dashboard = () => {
+  const [view, setView] = useState<"expense" | "income">("expense");
+
+  const toggleView = (currView: "expense" | "income") => {
+    setView(currView);
+    console.log(`View set to: ${currView}`);
+  };
+
   return (
     <div className="m-auto max-w-5xl">
       <div className="pt-[4rem] flex justify-center items-center">
-        <RadioGroup className="flex" defaultValue="option-one">
+        <RadioGroup className="flex" defaultValue="expense">
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option-one" id="option-one" />
-            <Label htmlFor="option-one" className="text-lg">
+            <RadioGroupItem
+              value="expense"
+              id="expense"
+              onClick={() => toggleView("expense")}
+            />
+            <Label htmlFor="expense" className="text-lg">
               Expenses
             </Label>
           </div>
           <div className="flex items-center space-x-2">
-            <RadioGroupItem value="option-two" id="option-two" />
-            <Label htmlFor="option-two" className="text-lg">
+            <RadioGroupItem
+              value="income"
+              id="income"
+              onClick={() => toggleView("income")}
+            />
+            <Label htmlFor="income" className="text-lg">
               Incomes
             </Label>
           </div>
@@ -25,7 +42,7 @@ const Dashboard = () => {
       </div>
 
       <div className="m-auto max-w-5xl ">
-        <FinancialForm />
+        <FinancialForm view={view} />
         <FinancialList />
       </div>
     </div>
