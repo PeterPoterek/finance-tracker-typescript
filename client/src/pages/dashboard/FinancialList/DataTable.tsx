@@ -29,6 +29,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 import { useState } from "react";
@@ -47,6 +48,9 @@ export function DataTable<TData, TValue>({
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+
+  const [showExpenses, setShowExpenses] = useState(true);
+  const [showIncomes, setShowIncomes] = useState(true);
 
   const table = useReactTable({
     data,
@@ -89,6 +93,20 @@ export function DataTable<TData, TValue>({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuCheckboxItem
+                checked={showExpenses}
+                onCheckedChange={(value) => setShowExpenses(value)}
+              >
+                Expenes
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={showIncomes}
+                onCheckedChange={(value) => setShowIncomes(value)}
+              >
+                Incomes
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuSeparator />
+
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
