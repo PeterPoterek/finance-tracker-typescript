@@ -51,6 +51,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
     transactionValue: 0,
     transactionCategory: "",
     createdAt: undefined,
+    transactionType: "",
   };
 
   const form = useForm<z.infer<typeof financialSchema>>({
@@ -59,6 +60,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   });
 
   const onSubmit = (values: FinancialEntry) => {
+    values.transactionType = view;
     console.log(values);
 
     form.reset(defaultValues);
