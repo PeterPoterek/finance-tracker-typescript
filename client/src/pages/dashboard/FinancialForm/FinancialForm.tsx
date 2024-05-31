@@ -46,21 +46,23 @@ interface FinancialFormProps {
 }
 
 const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
-  const onSubmit = (values: FinancialEntry) => {
-    console.log(values);
-
-    form.reset();
+  const defaultValues = {
+    description: "",
+    amount: 0,
+    transactionCategory: "",
+    createdAt: undefined,
   };
 
   const form = useForm<z.infer<typeof financialSchema>>({
     resolver: zodResolver(financialSchema),
-    defaultValues: {
-      description: "",
-      amount: 0,
-      transactionCategory: "",
-      createdAt: undefined,
-    },
+    defaultValues,
   });
+
+  const onSubmit = (values: FinancialEntry) => {
+    console.log(values);
+
+    form.reset(defaultValues);
+  };
 
   return (
     <div className="pt-[1rem] pb-[3.5rem]">
@@ -120,6 +122,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                 <FormLabel>Transaction Category</FormLabel>
                 <Select
                   onValueChange={field.onChange}
+                  value={field.value} // Make sure value is controlled by the form state
                   defaultValue={field.value}
                 >
                   <FormControl>
