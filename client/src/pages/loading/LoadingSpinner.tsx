@@ -1,9 +1,16 @@
 import { SyncLoader } from "react-spinners";
 
 const LoadingSpinner = () => {
+  const spinnerColor = getComputedStyle(document.documentElement)
+    .getPropertyValue("--primary")
+    .trim();
+
   return (
-    <div className="absolute w-full h-full bg-slate-400 flex justify-center items-center">
-      <SyncLoader color="#36d7b7" size={25} />
+    <div
+      className="fixed w-full h-full flex justify-center items-center"
+      style={{ backgroundColor: "var(--background)" }}
+    >
+      <SyncLoader color={`hsl(${spinnerColor})`} size={25} />
     </div>
   );
 };

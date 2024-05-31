@@ -13,17 +13,16 @@ import { ThemeProvider } from "./components/ui/theme-provider";
 const App = () => {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      <Router>
-        <Suspense fallback={<LoadingSpinner />}>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Router>
           <Navbar />
           <Routes>
             <Route path="/" element={<Dashboard />}></Route>
             <Route path="/auth" element={<Auth />}></Route>
             <Route path="*" element={<ErrorPage />} />{" "}
-            <Route path="spinner" element={<LoadingSpinner />} />
           </Routes>
-        </Suspense>
-      </Router>
+        </Router>
+      </Suspense>
     </ThemeProvider>
   );
 };
