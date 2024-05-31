@@ -47,8 +47,25 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     },
     cell: ({ row }) => {
       const transactionValue = row.original.transactionValue;
-      const transactionValueWithCurrency = `${transactionValue} USD`;
-      return <div className="font-medium">{transactionValueWithCurrency}</div>;
+      const transactionType = row.original.transactionType;
+
+      let textColor = "";
+      let symbol = "";
+
+      if (transactionType === "expense") {
+        textColor = "text-red-500";
+        symbol = "-";
+      } else if (transactionType === "income") {
+        textColor = "text-green-500";
+        symbol = "+";
+      }
+
+      const transactionValueWithCurrency = `${symbol}${transactionValue} $`;
+      return (
+        <div className={`font-medium ${textColor}`}>
+          {transactionValueWithCurrency}
+        </div>
+      );
     },
   },
   {
