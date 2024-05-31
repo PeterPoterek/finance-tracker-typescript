@@ -48,7 +48,7 @@ interface FinancialFormProps {
 const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   const defaultValues = {
     description: "",
-    amount: 0,
+    transactionValue: 0,
     transactionCategory: "",
     createdAt: undefined,
   };
@@ -94,7 +94,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
 
           <FormField
             control={form.control}
-            name="amount"
+            name="transactionValue"
             render={({ field }) => (
               <FormItem className="col-span-1">
                 <FormLabel>Amount</FormLabel>
@@ -122,7 +122,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                 <FormLabel>Transaction Category</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  value={field.value} // Make sure value is controlled by the form state
+                  value={field.value}
                   defaultValue={field.value}
                 >
                   <FormControl>

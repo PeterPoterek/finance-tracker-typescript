@@ -33,22 +33,22 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     },
   },
   {
-    accessorKey: "amount",
+    accessorKey: "transactionValue",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Amount
+          Value
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       );
     },
     cell: ({ row }) => {
-      const amount = row.original.amount;
-      const amountWithCurrency = `${amount} USD`;
-      return <div className="font-medium">{amountWithCurrency}</div>;
+      const transactionValue = row.original.transactionValue;
+      const transactionValueWithCurrency = `${transactionValue} USD`;
+      return <div className="font-medium">{transactionValueWithCurrency}</div>;
     },
   },
   {

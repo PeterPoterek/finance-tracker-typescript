@@ -12,7 +12,7 @@ const FinancialList = () => {
   const fetchPlaceholderData = async () => {
     try {
       const response = await axios.get(
-        "https://665791ff5c36170526454459.mockapi.io/api/user/transactions"
+        "https://665791ff5c36170526454459.mockapi.io/api/user/expenses"
       );
 
       // empty arr to test table without data
