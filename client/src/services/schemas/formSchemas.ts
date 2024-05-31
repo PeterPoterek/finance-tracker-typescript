@@ -7,6 +7,7 @@ export const financialSchema = z.object({
 
   transactionCategory: z.string().min(1, "Required"),
   createdAt: z.date(),
+  transactionType: z.string(),
 });
 
 export type FinancialEntry = z.infer<typeof financialSchema>;

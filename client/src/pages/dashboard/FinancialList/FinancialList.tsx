@@ -1,5 +1,5 @@
-import { Columns } from "./Columns.tsx";
-import { DataTable } from "./DataTable.tsx";
+import { Columns } from "./Columns";
+import { DataTable } from "./DataTable";
 
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -7,36 +7,42 @@ import axios from "axios";
 import { FinancialEntry } from "@/services/schemas/formSchemas";
 
 const FinancialList = () => {
-  const [placeholderData, setPlaceholderData] = useState<FinancialEntry[]>([]);
+  const [financialData, setFinancialData] = useState<FinancialEntry[]>([]);
 
-  const fetchPlaceholderData = async () => {
+  const fetchFinancialData = async () => {
     try {
-      const response = await axios.get(
-        "https://665791ff5c36170526454459.mockapi.io/api/user/expenses"
-      );
+      const [expensesResponse, incomesResponse] = await Promise.all([
+        axios.get(
+          "https://665791ff5c36170526454459.mockapi.io/api/user/expenses"
+        ),
+        axios.get(
+          "https://665791ff5c36170526454459.mockapi.io/api/user/incomes"
+        ),
+      ]);
 
-      // empty arr to test table without data
-      // setPlaceholderData([]);
+      const expenses = expensesResponse.data.map((entry: any) => ({
+        ...entry,
+        type: "Expense",
+      }));
+      const incomes = incomesResponse.data.map((entry: any) => ({
+        ...entry,
+        type: "Income",
+      }));
 
-      //zod validation
-      // const validatedData = response.data.map((item: any) =>
-      //   financialSchema.parse(item)
-      // );
-      // setPlaceholderData(validatedData);
-
-      setPlaceholderData(response.data);
+      const combinedData = [...expenses, ...incomes];
+      setFinancialData(combinedData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    fetchPlaceholderData();
+    fetchFinancialData();
   }, []);
 
   return (
     <div className="pb-10">
-      <DataTable columns={Columns} data={placeholderData} />
+      <DataTable columns={Columns} data={financialData} />
     </div>
   );
 };
