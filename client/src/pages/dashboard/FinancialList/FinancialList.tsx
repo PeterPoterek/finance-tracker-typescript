@@ -22,11 +22,11 @@ const FinancialList = () => {
 
       const expenses = expensesResponse.data.map((entry: any) => ({
         ...entry,
-        type: "Expense",
+        type: "expense",
       }));
       const incomes = incomesResponse.data.map((entry: any) => ({
         ...entry,
-        type: "Income",
+        type: "income",
       }));
 
       const combinedData = [...expenses, ...incomes].sort((a, b) => {

@@ -53,10 +53,10 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       let symbol = "";
 
       if (transactionType === "expense") {
-        textColor = "text-red-500";
+        textColor = "text-red-600";
         symbol = "-";
       } else if (transactionType === "income") {
-        textColor = "text-green-500";
+        textColor = "text-green-600";
         symbol = "+";
       }
 
