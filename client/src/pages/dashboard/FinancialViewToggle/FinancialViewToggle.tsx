@@ -14,30 +14,32 @@ const FinancialViewToggle: React.FC<FinancialViewToggleProps> = ({
   };
 
   return (
-    <div className="pt-[4rem] flex justify-center items-center">
-      <RadioGroup className="flex gap-5" defaultValue="expense">
-        <div className="flex items-center space-x-2 ">
-          <RadioGroupItem
-            value="expense"
-            id="expense"
-            onClick={() => toggleView("expense")}
-          />
-          <Label htmlFor="expense" className="text-lg cursor-pointer">
-            Expenses
-          </Label>
-        </div>
-        <div className="flex items-center space-x-2 ">
-          <RadioGroupItem
-            value="income"
-            id="income"
-            onClick={() => toggleView("income")}
-          />
-          <Label htmlFor="income" className="text-lg cursor-pointer">
-            Incomes
-          </Label>
-        </div>
-      </RadioGroup>
-    </div>
+    <>
+      <div className="pt-[4rem] flex justify-center items-center">
+        <RadioGroup className="flex gap-5" defaultValue="expense">
+          <div className="flex items-center space-x-2 ">
+            <RadioGroupItem
+              value="expense"
+              id="expense"
+              onClick={() => toggleView("expense")}
+            />
+            <Label htmlFor="expense" className="text-lg cursor-pointer">
+              Expenses
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2 ">
+            <RadioGroupItem
+              value="income"
+              id="income"
+              onClick={() => toggleView("income")}
+            />
+            <Label htmlFor="income" className="text-lg cursor-pointer">
+              Incomes
+            </Label>
+          </div>
+        </RadioGroup>
+      </div>
+    </>
   );
 };
 

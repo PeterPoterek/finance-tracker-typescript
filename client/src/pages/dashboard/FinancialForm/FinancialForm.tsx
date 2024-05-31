@@ -99,11 +99,13 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
             name="transactionValue"
             render={({ field }) => (
               <FormItem className="col-span-1">
-                <FormLabel>Amount</FormLabel>
+                <FormLabel>Value</FormLabel>
                 <FormControl>
                   <Input
-                    type="number"
-                    placeholder="Enter amount"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    placeholder="Enter value"
                     className="w-full"
                     {...field}
                     min={0}
@@ -111,6 +113,9 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                     onChange={(e) => field.onChange(Number(e.target.value))}
                   />
                 </FormControl>
+                <FormDescription>
+                  Please enter value of your {view}.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}

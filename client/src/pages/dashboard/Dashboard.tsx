@@ -11,6 +11,9 @@ const Dashboard = () => {
     <div className="m-auto max-w-5xl">
       <div className="m-auto max-w-5xl ">
         <FinancialViewToggle setView={setView} />
+        <h2 className="text-2xl">
+          Add {view} <span>{view === "expense" ? "🤑" : "💸"}</span>
+        </h2>
         <FinancialForm view={view} />
       </div>
 
