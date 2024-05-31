@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   AlertDialog,
@@ -19,6 +20,7 @@ import { useTheme } from "@/components/ui/theme-provider";
 type Theme = "light" | "dark" | "system";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState<Theme>(theme);
 
@@ -30,6 +32,10 @@ const Navbar = () => {
     const newTheme = currentTheme === "light" ? "dark" : "light";
     setCurrentTheme(newTheme);
     setTheme(newTheme);
+  };
+
+  const handleLogout = () => {
+    navigate("/auth");
   };
 
   return (
@@ -61,7 +67,9 @@ const Navbar = () => {
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction>Continue</AlertDialogAction>
+                  <AlertDialogAction onClick={handleLogout}>
+                    Continue
+                  </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
