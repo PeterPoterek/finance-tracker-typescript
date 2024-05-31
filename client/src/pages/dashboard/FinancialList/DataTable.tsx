@@ -32,7 +32,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -44,16 +44,23 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
-
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
 
   const [showExpenses, setShowExpenses] = useState(true);
   const [showIncomes, setShowIncomes] = useState(true);
 
+  const filteredData = useMemo(() => {
+    return data.filter((item: any) => {
+      if (showExpenses && showIncomes) return true;
+      if (showExpenses) return item.transactionType === "expense";
+      if (showIncomes) return item.transactionType === "income";
+      return false;
+    });
+  }, [data, showExpenses, showIncomes]);
+
   const table = useReactTable({
-    data,
+    data: filteredData,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -89,41 +96,38 @@ export function DataTable<TData, TValue>({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="ml-auto">
-                Columns
+                Toggle Columns
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuCheckboxItem
                 checked={showExpenses}
-                onCheckedChange={(value) => setShowExpenses(value)}
+                onCheckedChange={() => setShowExpenses(!showExpenses)}
               >
-                Expenes
+                Expenses
               </DropdownMenuCheckboxItem>
               <DropdownMenuCheckboxItem
                 checked={showIncomes}
-                onCheckedChange={(value) => setShowIncomes(value)}
+                onCheckedChange={() => setShowIncomes(!showIncomes)}
               >
                 Incomes
               </DropdownMenuCheckboxItem>
               <DropdownMenuSeparator />
-
               {table
                 .getAllColumns()
                 .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
+                .map((column) => (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }
+                  >
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                ))}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
@@ -135,18 +139,16 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -181,7 +183,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      {/* Pagnation buttons */}
+      {/* Pagination buttons */}
       <div className="flex flex-col  items-center">
         <div className="flex items-center justify-end space-x-2 py-4">
           <Button
