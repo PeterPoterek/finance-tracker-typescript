@@ -26,9 +26,9 @@ import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
 
-const handleClick = (transaction: FinancialEntry) => {
-  console.log(transaction);
-};
+// const handleClick = (transaction: FinancialEntry) => {
+//   console.log(transaction);
+// };
 
 export const Columns: ColumnDef<FinancialEntry>[] = [
   {
@@ -135,6 +135,21 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     cell: ({ row }) => {
       const transaction = row.original;
       const [isDialogOpen, setIsDialogOpen] = useState(false);
+      const [description, setDescription] = useState(transaction.description);
+      const [transactionValue, setTransactionValue] = useState(
+        transaction.transactionValue
+      );
+
+      const handleEdit = async () => {
+        try {
+          console.log(transaction);
+        } catch (error) {
+          console.error("Error updating transaction:", error);
+        } finally {
+          setIsDialogOpen(false);
+        }
+      };
+
       return (
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DropdownMenu>
@@ -146,20 +161,20 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
               <DialogTrigger asChild>
                 <DropdownMenuItem onSelect={() => setIsDialogOpen(true)}>
-                  Log out transaction
+                  Edit
                 </DropdownMenuItem>
               </DialogTrigger>
-              <DropdownMenuItem>Edit</DropdownMenuItem>
               <DropdownMenuItem>Delete</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Log out transaction</DialogTitle>
+              <DialogTitle>Edit transaction</DialogTitle>
               <DialogDescription>
-                Here you can log out the transaction details.
+                Here you can edit the transaction details.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
@@ -169,9 +184,9 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                 </Label>
                 <Input
                   id="description"
-                  value={transaction.description}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
                   className="col-span-3"
-                  readOnly
                 />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
@@ -180,14 +195,14 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                 </Label>
                 <Input
                   id="transactionValue"
-                  value={transaction.transactionValue}
+                  value={transactionValue}
+                  onChange={(e) => setTransactionValue(Number(e.target.value))}
                   className="col-span-3"
-                  readOnly
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button onClick={() => handleClick(transaction)}>Confirm</Button>
+              <Button onClick={() => handleEdit()}>Save</Button>
             </DialogFooter>
           </DialogContent>
         </Dialog>
