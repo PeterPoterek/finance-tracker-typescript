@@ -151,8 +151,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
           console.log(description, transactionValue);
 
           toast({
-            title: `Edited transaction`,
-            description: `Sucesfully edited ${transaction.description}`,
+            title: `Edited transaction 📝`,
+            description: `Sucesfully edited ${transaction.description} detials`,
           });
         } catch (error) {
           console.error("Error updating transaction:", error);
@@ -165,7 +165,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
         console.log(`Deleted : ${transaction.description}`);
 
         toast({
-          title: `Deleted transaction`,
+          title: `Deleted transaction 🗑️`,
           description: `Sucesfully deleted ${transaction.description}`,
         });
 
