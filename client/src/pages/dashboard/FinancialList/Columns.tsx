@@ -194,6 +194,9 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                   Value
                 </Label>
                 <Input
+                  type="number"
+                  inputMode="numeric"
+                  pattern="[0-9]*"
                   id="transactionValue"
                   value={transactionValue}
                   onChange={(e) => setTransactionValue(Number(e.target.value))}

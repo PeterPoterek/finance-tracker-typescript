@@ -110,7 +110,12 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                     {...field}
                     min={0}
                     value={field.value || ""}
-                    onChange={(e) => field.onChange(Number(e.target.value))}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      let value = e.target.value;
+                      value = value.replace(/e/gi, "");
+                      const numericValue = value.replace(/[^0-9.]/g, "");
+                      field.onChange(Number(numericValue));
+                    }}
                   />
                 </FormControl>
                 <FormDescription>
