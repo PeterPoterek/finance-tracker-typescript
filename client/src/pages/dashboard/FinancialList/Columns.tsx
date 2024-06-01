@@ -23,6 +23,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { Toaster } from "@/components/ui/toaster";
+import { useToast } from "@/components/ui/use-toast";
+
 import { useState } from "react";
 
 // const handleClick = (transaction: FinancialEntry) => {
@@ -135,6 +138,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       const transaction = row.original;
       const [isDialogOpen, setIsDialogOpen] = useState(false);
       const [description, setDescription] = useState(transaction.description);
+      const { toast } = useToast();
+
       const [transactionValue, setTransactionValue] = useState(
         transaction.transactionValue
       );
@@ -144,6 +149,11 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
         try {
           console.log(transaction);
           console.log(description, transactionValue);
+
+          toast({
+            title: `Edited transaction`,
+            description: `Sucesfully edited ${transaction.description}`,
+          });
         } catch (error) {
           console.error("Error updating transaction:", error);
         } finally {
@@ -153,6 +163,11 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
 
       const handleDelete = async (transaction: FinancialEntry) => {
         console.log(`Deleted : ${transaction.description}`);
+
+        toast({
+          title: `Deleted transaction`,
+          description: `Sucesfully deleted ${transaction.description}`,
+        });
 
         setIsDialogOpen(false);
       };
@@ -227,6 +242,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             <DialogContent className="sm:max-w-[425px]">
               {dialogContent}
             </DialogContent>
+
+            <Toaster />
           </Dialog>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
