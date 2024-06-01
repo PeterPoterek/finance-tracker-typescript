@@ -139,6 +139,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       const [transactionValue, setTransactionValue] = useState(
         transaction.transactionValue
       );
+      const [action, setAction] = useState<"edit" | "delete" | null>(null);
 
       const handleEdit = async () => {
         try {
@@ -153,31 +154,19 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
 
       const handleDelete = async (transaction: FinancialEntry) => {
         console.log(`Deleted : ${transaction.description}`);
+
+        setIsDialogOpen(false);
       };
 
-      return (
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+      const openDialog = (selectedAction: "edit" | "delete") => {
+        setAction(selectedAction);
+        setIsDialogOpen(true);
+      };
 
-              <DialogTrigger asChild>
-                <DropdownMenuItem onSelect={() => setIsDialogOpen(true)}>
-                  Edit
-                </DropdownMenuItem>
-              </DialogTrigger>
-              <DropdownMenuItem onSelect={() => handleDelete(transaction)}>
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <DialogContent className="sm:max-w-[425px]">
+      let dialogContent = null;
+      if (action === "edit") {
+        dialogContent = (
+          <>
             <DialogHeader>
               <DialogTitle>Edit transaction</DialogTitle>
               <DialogDescription>
@@ -214,8 +203,50 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             <DialogFooter>
               <Button onClick={() => handleEdit()}>Save</Button>
             </DialogFooter>
-          </DialogContent>
-        </Dialog>
+          </>
+        );
+      } else if (action === "delete") {
+        dialogContent = (
+          <>
+            <DialogHeader>
+              <DialogTitle>Delete transaction</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this transaction?
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+              <Button onClick={() => handleDelete(transaction)}>Confirm</Button>
+            </DialogFooter>
+          </>
+        );
+      }
+
+      return (
+        <>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogContent className="sm:max-w-[425px]">
+              {dialogContent}
+            </DialogContent>
+          </Dialog>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuItem onSelect={() => openDialog("edit")}>
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => openDialog("delete")}>
+                Delete
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       );
     },
   },
