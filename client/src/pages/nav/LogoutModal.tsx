@@ -24,7 +24,7 @@ const LogoutModal = () => {
     <div className="flex gap-1">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="linkSecondary" className="text-base">
+          <Button variant="linkSecondary" className="text-base p-0">
             Logout
           </Button>
         </AlertDialogTrigger>

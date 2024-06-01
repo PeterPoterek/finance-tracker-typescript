@@ -34,7 +34,7 @@ const Navbar = () => {
             onCheckedChange={toggleTheme}
           />
 
-          <div className="flex gap-1 items-center">
+          <div className="flex gap-2.5 items-center">
             <p>User name</p>
             <Avatar>
               <AvatarImage src="https://placehold.co/460x460?text=IMG" />
