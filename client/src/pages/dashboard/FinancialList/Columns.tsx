@@ -143,11 +143,16 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       const handleEdit = async () => {
         try {
           console.log(transaction);
+          console.log(description, transactionValue);
         } catch (error) {
           console.error("Error updating transaction:", error);
         } finally {
           setIsDialogOpen(false);
         }
+      };
+
+      const handleDelete = async (transaction: FinancialEntry) => {
+        console.log(`Deleted : ${transaction.description}`);
       };
 
       return (
@@ -167,7 +172,9 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                   Edit
                 </DropdownMenuItem>
               </DialogTrigger>
-              <DropdownMenuItem>Delete</DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => handleDelete(transaction)}>
+                Delete
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
           <DialogContent className="sm:max-w-[425px]">
