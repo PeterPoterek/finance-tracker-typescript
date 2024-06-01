@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
-
 import { useTheme } from "@/components/ui/theme-provider";
 import LogoutModal from "./LogoutModal";
 
@@ -21,19 +20,22 @@ const Navbar = () => {
   };
 
   return (
-    <>
-      <div className="fixed flex justify-end w-full m-auto p-2.5 pl-10 pr-10">
-        <div className="flex justify-center items-center gap-5 max-w-6xl	">
+    <div className="fixed w-full bg-background text-foreground shadow-md rounded">
+      <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
+        <div className="flex items-center">
+          <span className="text-4xl">🪙</span>
+          <h2 className="text-2xl font-bold">FinanceTracker</h2>
+        </div>
+        <div className="flex items-center gap-5">
           <Switch
             checked={currentTheme === "dark"}
             onCheckedChange={toggleTheme}
           />
           <p>User name</p>
-
           <LogoutModal />
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

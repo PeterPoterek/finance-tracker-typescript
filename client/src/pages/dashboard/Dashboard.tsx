@@ -8,7 +8,7 @@ const Dashboard = () => {
   const [view, setView] = useState<"expense" | "income">("expense");
 
   return (
-    <div className="m-auto max-w-5xl">
+    <div className="m-auto max-w-5xl pt-20">
       <div className="m-auto max-w-5xl ">
         <FinancialViewToggle setView={setView} />
         <h2 className="text-2xl">
