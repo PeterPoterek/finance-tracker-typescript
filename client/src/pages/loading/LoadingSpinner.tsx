@@ -7,7 +7,7 @@ const LoadingSpinner = () => {
 
   return (
     <div
-      className="fixed w-full h-full flex justify-center items-center"
+      className="fixed w-full h-full flex justify-center items-center z-[51]"
       style={{ backgroundColor: "var(--background)" }}
     >
       <SyncLoader color={`hsl(${spinnerColor})`} size={25} />

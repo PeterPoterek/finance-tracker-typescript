@@ -201,8 +201,8 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
             )}
           />
 
-          <div className="col-span-2 flex justify-center">
-            <Button type="submit" className="w-full max-w-xs">
+          <div className="col-span-2 flex justify-center pt-5">
+            <Button type="submit" className="w-full max-w-32 ">
               Submit
             </Button>
           </div>

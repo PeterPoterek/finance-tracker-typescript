@@ -3,6 +3,8 @@ import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
 import LogoutModal from "./LogoutModal";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 type Theme = "light" | "dark" | "system";
 
 const Navbar = () => {
@@ -20,7 +22,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="fixed w-full bg-background text-foreground shadow-md rounded">
+    <div className="fixed w-full bg-background text-foreground shadow-md rounded z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
         <div className="flex items-center">
           <span className="text-4xl">🪙</span>
@@ -31,8 +33,15 @@ const Navbar = () => {
             checked={currentTheme === "dark"}
             onCheckedChange={toggleTheme}
           />
-          <p>User name</p>
-          <LogoutModal />
+
+          <div className="flex gap-1 items-center">
+            <p>User name</p>
+            <Avatar>
+              <AvatarImage src="https://placehold.co/460x460?text=IMG" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <LogoutModal />
+          </div>
         </div>
       </div>
     </div>

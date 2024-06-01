@@ -53,10 +53,20 @@
   * {
     @apply border-border;
   }
+
+  html {
+    overflow-y: scroll;
+  }
+
   body {
     @apply bg-background text-foreground;
 
     font-family: "Roboto", sans-serif;
+
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
   }
 }
 

@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,11 +21,7 @@ const LogoutModal = () => {
   };
 
   return (
-    <div className="flex">
-      <Avatar>
-        <AvatarImage src="https://placehold.co/460x460?text=IMG" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+    <div className="flex gap-1">
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button variant="linkSecondary" className="text-base">
