@@ -1,5 +1,4 @@
 import { ColumnDef } from "@tanstack/react-table";
-
 import { FinancialEntry } from "../../../services/schemas/formSchemas";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
@@ -9,9 +8,23 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+import { useState } from "react";
 
 const handleClick = (transaction: FinancialEntry) => {
   console.log(transaction);
@@ -121,25 +134,63 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     id: "actions",
     cell: ({ row }) => {
       const transaction = row.original;
-
+      const [isDialogOpen, setIsDialogOpen] = useState(false);
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => handleClick(transaction)}>
-              Log out transaction
-            </DropdownMenuItem>
-            {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DialogTrigger asChild>
+                <DropdownMenuItem onSelect={() => setIsDialogOpen(true)}>
+                  Log out transaction
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DropdownMenuItem>Edit</DropdownMenuItem>
+              <DropdownMenuItem>Delete</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Log out transaction</DialogTitle>
+              <DialogDescription>
+                Here you can log out the transaction details.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="description" className="text-right">
+                  Description
+                </Label>
+                <Input
+                  id="description"
+                  value={transaction.description}
+                  className="col-span-3"
+                  readOnly
+                />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="transactionValue" className="text-right">
+                  Value
+                </Label>
+                <Input
+                  id="transactionValue"
+                  value={transaction.transactionValue}
+                  className="col-span-3"
+                  readOnly
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button onClick={() => handleClick(transaction)}>Confirm</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       );
     },
   },
