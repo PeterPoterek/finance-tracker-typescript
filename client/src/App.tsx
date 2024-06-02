@@ -17,9 +17,9 @@ const App = () => {
         <Router>
           <Navbar />
           <Routes>
-            <Route path="/" element={<Dashboard />}></Route>
-            <Route path="/auth" element={<Auth />}></Route>
-            <Route path="*" element={<ErrorPage />} />{" "}
+            <Route path="/" element={<Auth />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </Router>
       </Suspense>
