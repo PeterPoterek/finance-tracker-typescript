@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
-// import LogoutModal from "./LogoutModal";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -33,10 +32,18 @@ const Navbar = () => {
     setTheme(newTheme);
   };
 
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <div className="fixed w-full bg-background text-foreground shadow-md rounded z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
-        <div className="flex items-center cursor-pointer" onClick={() => navigate("/dashboard")}>
+        <div className="flex items-center cursor-pointer" onClick={() => handleNavigate("/dashboard")}>
           <span className="text-4xl">💰</span>
           <h2 className="text-2xl font-bold">FinanceTracker</h2>
         </div>
@@ -57,10 +64,10 @@ const Navbar = () => {
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/account")}>
+                  <DropdownMenuItem className="cursor-pointer" onClick={() => handleNavigate("/account")}>
                     Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/dashboard")}>
+                  <DropdownMenuItem className="cursor-pointer" onClick={() => handleNavigate("/dashboard")}>
                     Finance Tracker
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
