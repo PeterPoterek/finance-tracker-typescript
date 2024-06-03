@@ -14,7 +14,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 type Theme = "light" | "dark" | "system";
 
@@ -43,6 +52,10 @@ const Navbar = () => {
     });
   };
 
+  const handleLogout = () => {
+    handleNavigate("/");
+  };
+
   return (
     <div className="fixed w-full bg-background text-foreground shadow-md rounded z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
@@ -56,15 +69,17 @@ const Navbar = () => {
           <div className="flex gap-2.5 items-center">
             <p>User name</p>
 
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Are you absolutely sure?</DialogTitle>
-                  <DialogDescription>
-                    This action cannot be undone. This will permanently delete your account and remove your data from our servers.
-                  </DialogDescription>
-                </DialogHeader>
-              </DialogContent>
+            <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Are you sure you want to log out?</AlertDialogTitle>
+                  <AlertDialogDescription>Logging out will end your current session.</AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction onClick={handleLogout}>Log out</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -91,7 +106,7 @@ const Navbar = () => {
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-            </Dialog>
+            </AlertDialog>
           </div>
         </div>
       </div>
