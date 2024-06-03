@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
 import LogoutModal from "./LogoutModal";
+import { Link } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -43,17 +44,14 @@ const Navbar = () => {
           <h2 className="text-2xl font-bold">FinanceTracker</h2>
         </div>
         <div className="flex items-center gap-5">
-          <Switch
-            checked={currentTheme === "dark"}
-            onCheckedChange={toggleTheme}
-          />
+          <Switch checked={currentTheme === "dark"} onCheckedChange={toggleTheme} />
 
           <div className="flex gap-2.5 items-center">
             <p>User name</p>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer">
+                <Avatar className="cursor-pointer hover:scale-105 transition-transform duration-300">
                   <AvatarImage src="https://placehold.co/460x460?text=IMG" />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
@@ -61,8 +59,10 @@ const Navbar = () => {
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuGroup className="cursor-pointer">
+                  <DropdownMenuItem>
+                    <Link to="/account">Profile</Link>
+                  </DropdownMenuItem>
                   <DropdownMenuItem>Billing</DropdownMenuItem>
                   <DropdownMenuItem>Settings</DropdownMenuItem>
                   <DropdownMenuItem>Keyboard shortcuts</DropdownMenuItem>
@@ -71,9 +71,7 @@ const Navbar = () => {
                 <DropdownMenuGroup>
                   <DropdownMenuItem>Team</DropdownMenuItem>
                   <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>
-                      Invite users
-                    </DropdownMenuSubTrigger>
+                    <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
                     <DropdownMenuPortal>
                       <DropdownMenuSubContent>
                         <DropdownMenuItem>Email</DropdownMenuItem>
