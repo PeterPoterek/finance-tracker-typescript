@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
-import LogoutModal from "./LogoutModal";
-import { Link } from "react-router-dom";
+// import LogoutModal from "./LogoutModal";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -11,12 +11,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -25,6 +20,8 @@ type Theme = "light" | "dark" | "system";
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
   const [currentTheme, setCurrentTheme] = useState<Theme>(theme);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setCurrentTheme(theme);
@@ -39,8 +36,8 @@ const Navbar = () => {
   return (
     <div className="fixed w-full bg-background text-foreground shadow-md rounded z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
-        <div className="flex items-center">
-          <span className="text-4xl">🪙</span>
+        <div className="flex items-center cursor-pointer" onClick={() => navigate("/dashboard")}>
+          <span className="text-4xl">💰</span>
           <h2 className="text-2xl font-bold">FinanceTracker</h2>
         </div>
         <div className="flex items-center gap-5">
@@ -59,34 +56,15 @@ const Navbar = () => {
               <DropdownMenuContent className="w-56">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup className="cursor-pointer">
-                  <DropdownMenuItem>
-                    <Link to="/account">Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>Billing</DropdownMenuItem>
-                  <DropdownMenuItem>Settings</DropdownMenuItem>
-                  <DropdownMenuItem>Keyboard shortcuts</DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                  <DropdownMenuItem>Team</DropdownMenuItem>
-                  <DropdownMenuSub>
-                    <DropdownMenuSubTrigger>Invite users</DropdownMenuSubTrigger>
-                    <DropdownMenuPortal>
-                      <DropdownMenuSubContent>
-                        <DropdownMenuItem>Email</DropdownMenuItem>
-                        <DropdownMenuItem>Message</DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>More...</DropdownMenuItem>
-                      </DropdownMenuSubContent>
-                    </DropdownMenuPortal>
-                  </DropdownMenuSub>
-                  <DropdownMenuItem>New Team</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/account")}>
+                    Profile
+                  </DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/dashboard")}>
+                    Finance Tracker
+                  </DropdownMenuItem>
                 </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>GitHub</DropdownMenuItem>
-                <DropdownMenuItem>Support</DropdownMenuItem>
-                <DropdownMenuItem disabled>API</DropdownMenuItem>
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>Log out</DropdownMenuItem>
               </DropdownMenuContent>
