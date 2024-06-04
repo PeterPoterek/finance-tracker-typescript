@@ -9,9 +9,9 @@ import AuthForm from './AuthForm';
 
 const Auth = () => {
   return (
-    <div className="flex justify-center items-center pt-[10rem] max-w-5xl m-auto">
-      <div className="flex justify-center items-center flex-col p-[5rem] gap-5 w-[56rem] h-[25rem]">
-        <Accordion type="single" collapsible className="w-full ">
+    <div className="max-w-5xl m-auto flex pt-[10rem] gap-5">
+      <div className="flex justify-center items-center flex-col p-[5rem] gap-5 w-[56rem] ">
+        <Accordion type="single" collapsible className="w-full h-[653px] ">
           <AccordionItem value="item-1">
             <AccordionTrigger>Expense Tracking</AccordionTrigger>
             <AccordionContent>
