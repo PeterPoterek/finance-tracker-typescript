@@ -1,35 +1,17 @@
-import { Button } from '@/components/ui/button';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
-import { useNavigate } from 'react-router-dom';
+import AuthForm from './AuthForm';
 
 const Auth = () => {
-  const navigate = useNavigate();
-
-  const handleLogin = () => {
-    navigate('/dashboard');
-  };
-
   return (
-    <div className="flex justify-center items-center pt-20 	">
-      <div className="flex justify-center items-center flex-col p-[5rem] gap-5 w-[56rem] h-[20rem]">
-        <Accordion type="single" collapsible className="w-full">
+    <div className="flex justify-center items-center pt-[10rem] max-w-5xl m-auto">
+      <div className="flex justify-center items-center flex-col p-[5rem] gap-5 w-[56rem] h-[25rem]">
+        <Accordion type="single" collapsible className="w-full ">
           <AccordionItem value="item-1">
             <AccordionTrigger>Expense Tracking</AccordionTrigger>
             <AccordionContent>
@@ -46,6 +28,21 @@ const Auth = () => {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
+            <AccordionTrigger>User Authentication</AccordionTrigger>
+            <AccordionContent>
+              <p>
+                Users can register, log in, and manage their accounts securely.
+              </p>
+              <p>
+                The app includes a "Forgot Password" functionality, utilizing
+                SendGrid to handle password recovery emails. I have also
+                incorporated industry-standard security measures to protect user
+                data, including encrypted passwords and secure token-based
+                authentication.
+              </p>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="item-3">
             <AccordionTrigger>Technology Stack</AccordionTrigger>
             <AccordionContent>
               <p>
@@ -76,7 +73,7 @@ const Auth = () => {
                 .
               </p>
               <p>
-                On the backend, the application utilizes{' '}
+                On the backend, the application utilizes the{' '}
                 <a
                   target="_blank"
                   href="https://expressjs.com/"
@@ -92,10 +89,10 @@ const Auth = () => {
                 >
                   MongoDB
                 </a>{' '}
-                as database.
+                as the database.
               </p>
               <p>
-                You can check source code{' '}
+                You can check the source code{' '}
                 <a
                   href="https://github.com/PeterPoterek/finance-tracker-typescript"
                   target="_blank"
@@ -103,6 +100,7 @@ const Auth = () => {
                 >
                   here
                 </a>
+                .
               </p>
             </AccordionContent>
           </AccordionItem>
@@ -110,59 +108,7 @@ const Auth = () => {
       </div>
 
       <div>
-        <Tabs defaultValue="account" className="w-[400px]">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
-          </TabsList>
-          <TabsContent value="account">
-            <Card>
-              <CardHeader>
-                <CardTitle>Account</CardTitle>
-                <CardDescription>
-                  Make changes to your account here. Click save when you're
-                  done.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="name">Name</Label>
-                  <Input id="name" defaultValue="Pedro Duarte" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="username">Username</Label>
-                  <Input id="username" defaultValue="@peduarte" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save changes</Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-          <TabsContent value="password">
-            <Card>
-              <CardHeader>
-                <CardTitle>Password</CardTitle>
-                <CardDescription>
-                  Change your password here. After saving, you'll be logged out.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="space-y-1">
-                  <Label htmlFor="current">Current password</Label>
-                  <Input id="current" type="password" />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="new">New password</Label>
-                  <Input id="new" type="password" />
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button>Save password</Button>
-              </CardFooter>
-            </Card>
-          </TabsContent>
-        </Tabs>
+        <AuthForm />
       </div>
     </div>
   );
