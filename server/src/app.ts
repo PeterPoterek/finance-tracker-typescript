@@ -16,4 +16,8 @@ app.use(express.json());
 //   res.status(500).json({ message: 'Internal Server Error' });
 // });
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
 export default app;
