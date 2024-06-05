@@ -62,6 +62,8 @@ const Navbar = () => {
     logout();
   };
 
+  if (!isLoggedIn) return;
+
   return (
     <div className="fixed w-full bg-background text-foreground shadow-md rounded z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
