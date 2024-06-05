@@ -1,13 +1,11 @@
-import { Router, Request, Response } from 'express';
+import { Router } from 'express';
+
+import { handleLogin, handleRegister } from '../../controllers/authController';
 
 const authRouter = Router();
 
-authRouter.post('/login', (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Login route' });
-});
+authRouter.post('/login', handleLogin);
 
-authRouter.post('/register', (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Register route' });
-});
+authRouter.post('/register', handleRegister);
 
 export default authRouter;

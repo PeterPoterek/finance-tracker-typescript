@@ -13,6 +13,8 @@ app.use(express.json());
 
 app.use(logEvent);
 
+// Routes
+
 app.use('/api/auth', authRouter);
 
 app.use((req, res) => {
