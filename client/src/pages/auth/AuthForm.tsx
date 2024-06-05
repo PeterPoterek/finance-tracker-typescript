@@ -28,7 +28,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { RootState, AppDispatch } from '../../redux/store/store.ts';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '@/redux/slices/userSlice.ts';
+import { registerUser, userLoggedIn } from '@/redux/slices/userSlice.ts';
 
 import {
   loginSchema,
@@ -78,15 +78,14 @@ const AuthForm: React.FC = () => {
   };
 
   const handleRegister: SubmitHandler<RegisterData> = data => {
-    const user = {
-      username: data.username,
-      email: data.email,
-      password: data.password,
-    };
-
-    console.log('Registering with:', user);
-    dispatch(registerUser(user));
-    navigate('/dashboard');
+    dispatch(registerUser(data))
+      .unwrap()
+      .then(() => {
+        navigate('/dashboard');
+      })
+      .catch((error: { message: string }) => {
+        console.error('Error registering user:', error);
+      });
   };
 
   const handleGoogleLogin = async () => {
