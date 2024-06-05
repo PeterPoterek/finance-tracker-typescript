@@ -26,9 +26,9 @@ import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { RootState, AppDispatch } from '../../redux/store/store.ts';
-import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, userLoggedIn } from '@/redux/slices/userSlice.ts';
+import { AppDispatch } from '../../redux/store/store.ts';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '@/redux/slices/userSlice.ts';
 
 import {
   loginSchema,
@@ -50,9 +50,6 @@ interface RegisterData {
 const AuthForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
-
-  // const isLoading = useSelector((state: RootState) => state.isLoggedIn);
-  // const error = useSelector((state: RootState) => state.error);
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -178,19 +175,6 @@ const AuthForm: React.FC = () => {
                 >
                   <FormField
                     control={registerForm.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input placeholder="Email" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={registerForm.control}
                     name="username"
                     render={({ field }) => (
                       <FormItem>
@@ -202,6 +186,21 @@ const AuthForm: React.FC = () => {
                       </FormItem>
                     )}
                   />
+
+                  <FormField
+                    control={registerForm.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Email" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
                   <FormField
                     control={registerForm.control}
                     name="password"
