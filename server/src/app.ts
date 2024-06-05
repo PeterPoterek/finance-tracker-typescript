@@ -5,7 +5,20 @@ import { logEvent } from './middleware/logger';
 
 const app: Express = express();
 
-app.use(cors());
+const whitelist = ['https://finance-tracker-typescript.vercel.app/'];
+const corsOptions = {
+  origin: (origin: any, callback: any) => {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+
+  optionsSuccessStatus: 200,
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 app.use(logEvent);

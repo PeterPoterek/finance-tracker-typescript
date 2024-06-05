@@ -16,7 +16,7 @@ const startServer = async () => {
 
     app.listen(port, () => {
       const url = `http://localhost:${port}`.cyan;
-      console.log(`Server running at ${url}`);
+      console.log(`Server running at ${url} 🎉`);
     });
   } catch (err) {
     console.log((err as string).red);
