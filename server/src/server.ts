@@ -12,14 +12,20 @@ const startServer = async () => {
   try {
     await mongoose.connect(dbUrl);
 
-    console.log('Database connection successful'.green);
+    console.log('Database connection successful ✅'.green.bold);
 
     app.listen(port, () => {
-      const url = `http://localhost:${port}`.cyan;
-      console.log(`Server running at ${url} 🎉`);
+      const url = `http://localhost:${port}`.cyan.dim.underline;
+      console.log('---------------------------------------------------'.black);
+      console.log(`🐱 Server is up and running at ${url} 🐱`.magenta.bold);
+      console.log('---------------------------------------------------'.black);
     });
   } catch (err) {
-    console.log((err as string).red);
+    if (err instanceof Error) {
+      console.log(err.message.red);
+    } else {
+      console.log('Unknown error'.red);
+    }
     process.exit(1);
   }
 };
