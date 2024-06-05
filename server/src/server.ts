@@ -24,14 +24,13 @@ const startServer = async () => {
     console.clear();
     console.log(divider.black);
     console.log('Database connection successful ✅'.green.bold);
-    console.log();
+    console.log('');
 
     app.listen(port, () => {
       const url = `http://localhost:${port}`.cyan.dim.underline;
 
       console.log(`🐱 Server is up and running at ${url} 🐱`.magenta.bold);
       console.log(divider.black);
-      console.log();
     });
   } catch (err) {
     if (err instanceof Error) {
