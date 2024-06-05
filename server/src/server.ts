@@ -1,6 +1,7 @@
 import app from './app';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import 'colors';
 
 dotenv.config();
 
@@ -11,13 +12,14 @@ const startServer = async () => {
   try {
     await mongoose.connect(dbUrl);
 
-    console.log('Database connection successful');
+    console.log('Database connection successful'.green);
 
     app.listen(port, () => {
-      console.log(`Server running on port: ${port}`);
+      const url = `http://localhost:${port}`.cyan;
+      console.log(`Server running at ${url}`);
     });
   } catch (err) {
-    console.log(err);
+    console.log((err as string).red);
     process.exit(1);
   }
 };
