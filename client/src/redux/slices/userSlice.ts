@@ -9,6 +9,7 @@ interface UserState {
     email: string;
     avatarURL: string;
   } | null;
+
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
@@ -29,7 +30,7 @@ export const registerUser = createAsyncThunk(
   ) => {
     try {
       const response = await axios.post(
-        `${apiUrl}/auth/api/register`,
+        `${apiUrl}/api/auth/register`,
         userData
       );
       return response.data;
@@ -50,7 +51,7 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post(`${apiUrl}/auth/api/login`, userData);
+      const response = await axios.post(`${apiUrl}/api/auth/login`, userData);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
