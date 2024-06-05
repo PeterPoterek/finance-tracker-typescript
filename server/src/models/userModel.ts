@@ -20,6 +20,7 @@ interface UserSchema extends Document {
   password: string;
   isVerified: boolean;
   avatarURL?: string;
+  createdAt: Date;
 }
 
 const userSchema = new Schema<UserSchema>({
@@ -29,10 +30,12 @@ const userSchema = new Schema<UserSchema>({
   isVerified: { type: Boolean, default: false },
   avatarURL: {
     type: String,
+    validate: { validator: (v: string) => z.string().url() },
+    optional: true,
   },
+  createdAt: { type: Date, default: Date.now },
 });
 
-// Middleware to hash password before saving user
 userSchema.pre<UserSchema>('save', async function (next) {
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10);
