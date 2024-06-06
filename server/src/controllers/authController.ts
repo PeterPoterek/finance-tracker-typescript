@@ -54,6 +54,8 @@ export const handleLogin = async (req: Request, res: Response) => {
     const maxAge = 24 * 60 * 60 * 1000;
 
     res.cookie("jwt", refreshToken, { httpOnly: true, maxAge });
+    // res.cookie("jwt", refreshToken, { httpOnly: true, maxAge ,secure: true});
+
     res.status(200).json({ message: "Login successful", user, accessToken });
   } catch (error) {
     console.error("Error logging in:", error);
@@ -108,5 +110,14 @@ export const handleRegister = async (req: Request, res: Response) => {
 };
 
 export const handleLogout = async (req: Request, res: Response) => {
-  res.status(200).json({ message: "logout route" });
+  const cookies = req.cookies;
+
+  if (!cookies.jwt) {
+    return res.sendStatus(204);
+  }
+
+  res.clearCookie("jwt", { httpOnly: true });
+  // res.clearCookie("jwt", { httpOnly: true, secure: true });
+
+  res.status(200).json({ message: "Logout successful" });
 };
