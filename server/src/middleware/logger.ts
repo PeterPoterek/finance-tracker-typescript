@@ -8,3 +8,24 @@ export const logEvent = (req: Request, res: Response, next: NextFunction) => {
   console.log(`${method} ${path}`);
   next();
 };
+
+export const logDatabaseConnectionSuccess = () => {
+  console.clear();
+  console.log(dividers(50).black);
+  console.log('Database connection successful ✅'.green.bold);
+  console.log('');
+};
+
+export const logServerStart = (port: string) => {
+  const url = `http://localhost:${port}`.cyan.dim.underline;
+  console.log(`🐱 Server is up and running at ${url} 🐱`.magenta.bold);
+  console.log(dividers(50).black);
+};
+
+const dividers = (length: number): string => {
+  let dividersCount = '';
+  for (let i = 0; i < length; i++) {
+    dividersCount += '─';
+  }
+  return dividersCount;
+};

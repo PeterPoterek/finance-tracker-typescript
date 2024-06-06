@@ -11,7 +11,16 @@ interface MongoDBError extends Error {
 }
 
 export const handleLogin = (req: Request, res: Response) => {
-  res.status(200).json({ message: 'Login route' });
+  const { email, password } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: 'Email is required' });
+  }
+  if (!password) {
+    return res.status(400).json({ error: 'Password is required' });
+  }
+
+  res.status(200).json({ message: `${email} ${password}` });
 };
 
 export const handleRegister = async (req: Request, res: Response) => {
