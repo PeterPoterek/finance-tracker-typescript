@@ -37,9 +37,13 @@ export const handleLogin = async (req: Request, res: Response) => {
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
-    const token = jwt.sign({ userId: user._id, username: user.username }, ACCESS_TOKEN_SECRET, {
-      expiresIn: "1m",
-    });
+    const accessToken = jwt.sign(
+      { userId: user._id, username: user.username },
+      ACCESS_TOKEN_SECRET,
+      {
+        expiresIn: "1m",
+      }
+    );
 
     const refreshToken = jwt.sign(
       { userId: user._id, username: user.username },
@@ -50,7 +54,7 @@ export const handleLogin = async (req: Request, res: Response) => {
     const maxAge = 24 * 60 * 60 * 1000;
 
     res.cookie("jwt", refreshToken, { httpOnly: true, maxAge });
-    res.status(200).json({ message: "Login successful", user, token });
+    res.status(200).json({ message: "Login successful", user, accessToken });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal Server Error" });

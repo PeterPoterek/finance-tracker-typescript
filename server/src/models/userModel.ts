@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 import bcrypt from "bcrypt";
-import { z } from "zod";
+import { string, z } from "zod";
 
 const userSchemaDefinition = z.object({
   username: z
