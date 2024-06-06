@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// axios.defaults.withCredentials = true;
 const apiUrl = import.meta.env.VITE_API_URL;
 
 interface UserState {

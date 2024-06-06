@@ -26,10 +26,6 @@ import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { AppDispatch } from "../../redux/store/store.ts";
-import { useDispatch } from "react-redux";
-import { registerUser } from "@/redux/slices/userSlice.ts";
-
 import {
   loginSchema,
   registerSchema,
@@ -51,8 +47,7 @@ interface RegisterData {
 
 const AuthForm: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
-  const { login } = useAuth();
+  const { login, register } = useAuth();
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -73,21 +68,15 @@ const AuthForm: React.FC = () => {
   });
 
   const handleLogin: SubmitHandler<LoginData> = data => {
-    console.log("Logging in with:", data);
     login(data).then(() => {
       navigate("/dashboard");
     });
   };
 
   const handleRegister: SubmitHandler<RegisterData> = data => {
-    dispatch(registerUser(data))
-      .unwrap()
-      .then(() => {
-        navigate("/dashboard");
-      })
-      .catch((error: { message: string }) => {
-        console.error("Error registering user:", error);
-      });
+    register(data).then(() => {
+      navigate("/dashboard");
+    });
   };
 
   const handleGoogleLogin = async () => {
