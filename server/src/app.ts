@@ -7,11 +7,18 @@ import { logEvent } from "./middleware/logger";
 
 import authRouter from "./routes/api/authRouter";
 import refreshRouter from "./routes/api/refreshRouter";
+import credentials from "./middleware/credentials";
+import { allowedOrigins } from "./config/allowedOrigins";
 
 const app: Express = express();
 
-app.use(cors());
-
+app.use(credentials);
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 

@@ -1,8 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import axios from "axios";
-
-// axios.defaults.withCredentials = true;
-const apiUrl = import.meta.env.VITE_API_URL;
+import axiosInstance from "../../lib/axiosInstance";
 
 interface UserState {
   user: {
@@ -10,7 +7,6 @@ interface UserState {
     email: string;
     avatarURL: string;
   } | null;
-
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
@@ -30,10 +26,7 @@ export const registerUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post(
-        `${apiUrl}/api/auth/register`,
-        userData
-      );
+      const response = await axiosInstance.post("/api/auth/register", userData);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
@@ -52,14 +45,10 @@ export const loginUser = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post(`${apiUrl}/api/auth/login`, userData);
-
-      console.log(response.data);
+      const response = await axiosInstance.post("/api/auth/login", userData);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
-        console.log(error.response.data);
-
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue({ error: "Network Error" });
@@ -67,6 +56,8 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
+// The rest of the slice remains unchanged
 
 const userSlice = createSlice({
   name: "user",
