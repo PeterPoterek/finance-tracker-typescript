@@ -1,15 +1,28 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../lib/axiosInstance";
 
+interface User {
+  username: string;
+  email: string;
+  avatarURL: string;
+}
+
 interface UserState {
-  user: {
-    username: string;
-    email: string;
-    avatarURL: string;
-  } | null;
+  user: User | null;
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
+}
+
+interface RegisterUserData {
+  username: string;
+  email: string;
+  password: string;
+}
+
+interface LoginUserData {
+  email: string;
+  password: string;
 }
 
 const initialState: UserState = {
@@ -21,10 +34,7 @@ const initialState: UserState = {
 
 export const registerUser = createAsyncThunk(
   "user/register",
-  async (
-    userData: { username: string; email: string; password: string },
-    { rejectWithValue }
-  ) => {
+  async (userData: RegisterUserData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/api/auth/register", userData);
       return response.data;
@@ -40,10 +50,7 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "user/login",
-  async (
-    userData: { email: string; password: string },
-    { rejectWithValue }
-  ) => {
+  async (userData: LoginUserData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/api/auth/login", userData);
       return response.data;
@@ -56,8 +63,6 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
-
-// The rest of the slice remains unchanged
 
 const userSlice = createSlice({
   name: "user",
@@ -83,7 +88,7 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{
             message: string;
-            user: { username: string; email: string; avatarURL: string };
+            user: User;
           }>
         ) => {
           state.loading = false;
@@ -105,7 +110,7 @@ const userSlice = createSlice({
         (
           state,
           action: PayloadAction<{
-            user: { username: string; email: string; avatarURL: string };
+            user: User;
           }>
         ) => {
           state.loading = false;
