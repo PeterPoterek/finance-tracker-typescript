@@ -1,6 +1,6 @@
-import googleIcon from '../../assets/google.svg';
+import googleIcon from "../../assets/google.svg";
 
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Card,
   CardHeader,
@@ -8,10 +8,10 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   Form,
   FormControl,
@@ -19,21 +19,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { AppDispatch } from '../../redux/store/store.ts';
-import { useDispatch } from 'react-redux';
-import { registerUser } from '@/redux/slices/userSlice.ts';
+import { AppDispatch } from "../../redux/store/store.ts";
+import { useDispatch } from "react-redux";
+import { registerUser } from "@/redux/slices/userSlice.ts";
 
 import {
   loginSchema,
   registerSchema,
-} from '../../services/schemas/validationSchemas.ts';
+} from "../../services/schemas/validationSchemas.ts";
+
+import useAuth from "@/hooks/useAuth.ts";
 
 interface LoginData {
   email: string;
@@ -50,43 +52,46 @@ interface RegisterData {
 const AuthForm: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const { login } = useAuth();
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
     },
   });
 
   const registerForm = useForm<RegisterData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      email: '',
-      username: '',
-      password: '',
-      confirmPassword: '',
+      email: "",
+      username: "",
+      password: "",
+      confirmPassword: "",
     },
   });
 
   const handleLogin: SubmitHandler<LoginData> = data => {
-    console.log('Logging in with:', data);
-    navigate('/dashboard');
+    console.log("Logging in with:", data);
+    login(data).then(() => {
+      navigate("/dashboard");
+    });
   };
 
   const handleRegister: SubmitHandler<RegisterData> = data => {
     dispatch(registerUser(data))
       .unwrap()
       .then(() => {
-        navigate('/dashboard');
+        navigate("/dashboard");
       })
       .catch((error: { message: string }) => {
-        console.error('Error registering user:', error);
+        console.error("Error registering user:", error);
       });
   };
 
   const handleGoogleLogin = async () => {
-    navigate('/dashboard');
+    navigate("/dashboard");
   };
 
   return (

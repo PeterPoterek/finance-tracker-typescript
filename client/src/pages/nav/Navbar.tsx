@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Switch } from '@/components/ui/switch';
-import { useTheme } from '@/components/ui/theme-provider';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "@/components/ui/theme-provider";
+import { useNavigate } from "react-router-dom";
 
 //#region shadcn imports
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +13,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,12 +23,12 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
+} from "@/components/ui/alert-dialog";
 //#endregion
 
-import useAuth from '@/hooks/useAuth';
+import useAuth from "@/hooks/useAuth";
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = "light" | "dark" | "system";
 
 const Navbar = () => {
   const { theme, setTheme } = useTheme();
@@ -38,14 +38,12 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
 
-  console.log(isLoggedIn);
-
   useEffect(() => {
     setCurrentTheme(theme);
   }, [theme]);
 
   const toggleTheme = () => {
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    const newTheme = currentTheme === "light" ? "dark" : "light";
     setCurrentTheme(newTheme);
     setTheme(newTheme);
   };
@@ -54,7 +52,7 @@ const Navbar = () => {
     navigate(path);
     window.scrollTo({
       top: 0,
-      behavior: 'smooth',
+      behavior: "smooth",
     });
   };
 
@@ -69,14 +67,14 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto flex justify-between items-center p-4">
         <div
           className="flex items-center cursor-pointer"
-          onClick={() => handleNavigate('/dashboard')}
+          onClick={() => handleNavigate("/dashboard")}
         >
           <span className="text-4xl">💰</span>
           <h2 className="text-2xl font-bold">FinanceTracker</h2>
         </div>
         <div className="flex items-center gap-5">
           <Switch
-            checked={currentTheme === 'dark'}
+            checked={currentTheme === "dark"}
             onCheckedChange={toggleTheme}
           />
 
@@ -114,13 +112,13 @@ const Navbar = () => {
                   <DropdownMenuGroup>
                     <DropdownMenuItem
                       className="cursor-pointer"
-                      onClick={() => handleNavigate('/account')}
+                      onClick={() => handleNavigate("/account")}
                     >
                       Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="cursor-pointer"
-                      onClick={() => handleNavigate('/dashboard')}
+                      onClick={() => handleNavigate("/dashboard")}
                     >
                       Finance Tracker
                     </DropdownMenuItem>

@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -23,7 +23,7 @@ const initialState: UserState = {
 };
 
 export const registerUser = createAsyncThunk(
-  'user/register',
+  "user/register",
   async (
     userData: { username: string; email: string; password: string },
     { rejectWithValue }
@@ -38,33 +38,37 @@ export const registerUser = createAsyncThunk(
       if (error.response && error.response.data) {
         return rejectWithValue(error.response.data);
       } else {
-        return rejectWithValue({ error: 'Network Error' });
+        return rejectWithValue({ error: "Network Error" });
       }
     }
   }
 );
 
 export const loginUser = createAsyncThunk(
-  'user/login',
+  "user/login",
   async (
     userData: { email: string; password: string },
     { rejectWithValue }
   ) => {
     try {
       const response = await axios.post(`${apiUrl}/api/auth/login`, userData);
+
+      console.log(response.data);
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
+        console.log(error.response.data);
+
         return rejectWithValue(error.response.data);
       } else {
-        return rejectWithValue({ error: 'Network Error' });
+        return rejectWithValue({ error: "Network Error" });
       }
     }
   }
 );
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     logoutUser: state => {

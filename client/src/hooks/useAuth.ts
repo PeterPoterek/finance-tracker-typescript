@@ -1,6 +1,11 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState, AppDispatch } from '../redux/store/store';
-import { logoutUser } from '@/redux/slices/userSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "../redux/store/store";
+import { logoutUser, loginUser } from "@/redux/slices/userSlice";
+
+interface LoginData {
+  email: string;
+  password: string;
+}
 
 const useAuth = () => {
   const isLoggedIn = useSelector((state: RootState) => state.isLoggedIn);
@@ -10,7 +15,9 @@ const useAuth = () => {
     dispatch(logoutUser());
   };
 
-  const login = () => {};
+  const login = (data: LoginData) => {
+    return dispatch(loginUser(data));
+  };
 
   return { isLoggedIn, logout, login };
 };
