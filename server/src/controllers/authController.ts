@@ -2,6 +2,13 @@ import { Request, Response } from "express";
 import { UserModel } from "../models/userModel";
 import bcrypt from "bcrypt";
 import gravatar from "gravatar";
+import jwt from "jsonwebtoken";
+
+const ACCESS_TOKEN_SECRET =
+  process.env.ACCESS_TOKEN_SECRET || "ACCESS_TOKEN_SECRET";
+
+const REFRESH_TOKEN_SECRET =
+  process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET";
 
 interface MongoDBError extends Error {
   code?: number;
@@ -11,23 +18,44 @@ interface MongoDBError extends Error {
 }
 
 export const handleLogin = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ error: "Email is required" });
-  }
-  if (!password) {
-    return res.status(400).json({ error: "Password is required" });
-  }
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+    if (!password) {
+      return res.status(400).json({ error: "Password is required" });
+    }
 
-  const existingUserByEmail = await UserModel.findOne({ email });
-  if (!existingUserByEmail) {
-    return res
-      .status(400)
-      .json({ error: `User with ${email} email doesnt exists` });
-  }
+    const user = await UserModel.findOne({ email });
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: `User with email ${email} doesn't exist` });
+    }
 
-  res.status(200).json({ message: `${email} ${password}` });
+    console.log(`Stored hashed password: ${user.password}`);
+    console.log(`Entered password: ${password.trim()}`);
+
+    const isMatch = await bcrypt.compare(password.trim(), user.password);
+    console.log(`Password comparison result: ${isMatch}`);
+
+    if (!isMatch) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
+
+    const token = jwt.sign(
+      { userId: user._id, username: user.username },
+      ACCESS_TOKEN_SECRET,
+      { expiresIn: "10m" }
+    );
+
+    res.status(200).json({ message: "Login successful", token });
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
 export const handleRegister = async (req: Request, res: Response) => {
@@ -51,12 +79,11 @@ export const handleRegister = async (req: Request, res: Response) => {
     const avatarURL = gravatar.url(email, { s: "200", d: "retro" });
 
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new UserModel({
       username,
       email,
-      password: hashedPassword,
+      password: password.trim(),
       avatarURL,
     });
 
