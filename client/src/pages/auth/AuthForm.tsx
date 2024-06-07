@@ -25,7 +25,7 @@ import {
 
 //#endregion
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -51,8 +51,8 @@ interface RegisterData {
 
 const AuthForm: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || "/dashboard";
+  // const location = useLocation();
+  // const from = location.state?.from?.pathname ||"/dashboard";
 
   const { login, register } = useAuth();
 
