@@ -3,9 +3,9 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from "@/components/ui/accordion";
 
-import AuthForm from './AuthForm';
+import AuthForm from "./AuthForm";
 
 const Auth = () => {
   return (
@@ -46,7 +46,7 @@ const Auth = () => {
             <AccordionTrigger>Technology Stack</AccordionTrigger>
             <AccordionContent>
               <p>
-                The frontend of this project is built with{' '}
+                The frontend of this project is built with{" "}
                 <a
                   target="_blank"
                   href="https://react.dev/"
@@ -54,15 +54,15 @@ const Auth = () => {
                 >
                   React
                 </a>
-                , utilizing{' '}
+                , utilizing{" "}
                 <a
                   target="_blank"
                   href="https://ui.shadcn.com/"
                   className="font-bold"
                 >
                   shadcn
-                </a>{' '}
-                components and styled with{' '}
+                </a>{" "}
+                components and styled with{" "}
                 <a
                   target="_blank"
                   href="https://tailwindcss.com/"
@@ -73,26 +73,26 @@ const Auth = () => {
                 .
               </p>
               <p>
-                On the backend, the application utilizes the{' '}
+                On the backend, the application utilizes the{" "}
                 <a
                   target="_blank"
                   href="https://expressjs.com/"
                   className="font-bold"
                 >
                   Express
-                </a>{' '}
-                server with{' '}
+                </a>{" "}
+                server with{" "}
                 <a
                   target="_blank"
                   href="https://www.mongodb.com/"
                   className="font-bold"
                 >
                   MongoDB
-                </a>{' '}
+                </a>{" "}
                 as the database.
               </p>
               <p>
-                You can check the source code{' '}
+                You can check the source code{" "}
                 <a
                   href="https://github.com/PeterPoterek/finance-tracker-typescript"
                   target="_blank"

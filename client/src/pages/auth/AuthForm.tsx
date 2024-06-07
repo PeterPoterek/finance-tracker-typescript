@@ -1,5 +1,7 @@
 import googleIcon from "../../assets/google.svg";
 
+// #region shadcn imports
+
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Card,
@@ -21,7 +23,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { useNavigate } from "react-router-dom";
+//#endregion
+
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -47,6 +51,9 @@ interface RegisterData {
 
 const AuthForm: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || "/dashboard";
+
   const { login, register } = useAuth();
 
   const loginForm = useForm<LoginData>({
@@ -66,22 +73,28 @@ const AuthForm: React.FC = () => {
       confirmPassword: "",
     },
   });
-
-  const handleLogin: SubmitHandler<LoginData> = data => {
-    login(data).then(() => {
-      navigate("/dashboard");
-    });
+  const handleLogin: SubmitHandler<LoginData> = async data => {
+    try {
+      const response = await login(data);
+      if (response.type.endsWith("/fulfilled")) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
-  const handleRegister: SubmitHandler<RegisterData> = data => {
-    register(data).then(() => {
-      navigate("/dashboard");
-    });
+  const handleRegister: SubmitHandler<RegisterData> = async data => {
+    try {
+      const response = await register(data);
+      if (response.type.endsWith("/fulfilled")) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Registration failed:", error);
+    }
   };
-
-  const handleGoogleLogin = async () => {
-    navigate("/dashboard");
-  };
+  const handleGoogleLogin = async () => {};
 
   return (
     <div className="flex justify-center items-center">

@@ -18,16 +18,20 @@ const useAuth = () => {
   const isLoggedIn = useSelector((state: RootState) => state.isLoggedIn);
   const dispatch = useDispatch<AppDispatch>();
 
+  console.log(isLoggedIn);
+
   const logout = () => {
     return dispatch(logoutUser());
   };
 
-  const login = (data: LoginData) => {
-    return dispatch(loginUser(data));
+  const login = async (data: LoginData) => {
+    const response = await dispatch(loginUser(data));
+    return response;
   };
 
-  const register = (data: RegisterData) => {
-    return dispatch(registerUser(data));
+  const register = async (data: RegisterData) => {
+    const response = await dispatch(registerUser(data));
+    return response;
   };
 
   return { isLoggedIn, logout, login, register };
