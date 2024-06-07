@@ -26,24 +26,21 @@ export const handleRefreshToken = async (req: Request, res: Response) => {
     return res.sendStatus(401);
   }
 
-  jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err: any, user: any) => {
-    if (err || !user) {
+  jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err: any, decodedToken: any) => {
+    if (err || !decodedToken || !decodedToken.userId) {
       return res.sendStatus(403);
     }
 
     try {
-      const currUser = await UserModel.findOne({ username: user.username });
-
+      const currUser = await UserModel.findById(decodedToken.userId);
       if (!currUser) {
         return res.sendStatus(403);
       }
 
       const accessToken = jwt.sign(
-        { userId: currUser._id, username: user.username },
+        { userId: currUser._id, username: currUser.username },
         ACCESS_TOKEN_SECRET,
-        {
-          expiresIn: "1m",
-        }
+        { expiresIn: "15m" }
       );
 
       res.json({ accessToken });
