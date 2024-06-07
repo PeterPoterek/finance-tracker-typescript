@@ -9,6 +9,7 @@ import authRouter from "./routes/api/authRouter";
 import refreshRouter from "./routes/api/refreshRouter";
 import credentials from "./middleware/credentials";
 import { allowedOrigins } from "./config/allowedOrigins";
+import userRouter from "./routes/api/userRouter";
 
 const app: Express = express();
 
@@ -27,6 +28,7 @@ app.use(logEvent);
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/refresh", refreshRouter);
+app.use("/api/user", userRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: `Not found - ${req.path}` });
