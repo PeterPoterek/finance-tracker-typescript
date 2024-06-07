@@ -56,7 +56,16 @@ export const handleLogin = async (req: Request, res: Response) => {
     res.cookie("jwt", refreshToken, { httpOnly: true, maxAge });
     // res.cookie("jwt", refreshToken, { httpOnly: true, maxAge ,secure: true});
 
-    res.status(200).json({ message: "Login successful", user, accessToken });
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        avatarURL: user.avatarURL,
+      },
+      accessToken,
+    });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal Server Error" });

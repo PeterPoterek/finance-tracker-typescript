@@ -1,14 +1,11 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../lib/axiosInstance";
 
-interface User {
+interface UserState {
+  _id: string;
   username: string;
   email: string;
   avatarURL: string;
-}
-
-interface UserState {
-  user: User | null;
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
@@ -26,7 +23,10 @@ interface LoginUserData {
 }
 
 const initialState: UserState = {
-  user: null,
+  _id: "",
+  username: "",
+  email: "",
+  avatarURL: "",
   isLoggedIn: false,
   loading: false,
   error: null,
@@ -69,8 +69,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     logoutUser: state => {
-      state.user = null;
-      state.isLoggedIn = false;
+      return { ...initialState };
     },
     userLoggedIn: state => {
       state.isLoggedIn = true;
@@ -88,11 +87,14 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{
             message: string;
-            user: User;
+            user: UserState;
           }>
         ) => {
           state.loading = false;
-          state.user = action.payload.user;
+          state._id = action.payload.user._id;
+          state.username = action.payload.user.username;
+          state.email = action.payload.user.email;
+          state.avatarURL = action.payload.user.avatarURL;
           state.isLoggedIn = true;
           state.error = null;
         }
@@ -110,11 +112,14 @@ const userSlice = createSlice({
         (
           state,
           action: PayloadAction<{
-            user: User;
+            user: UserState;
           }>
         ) => {
           state.loading = false;
-          state.user = action.payload.user;
+          state._id = action.payload.user._id;
+          state.username = action.payload.user.username;
+          state.email = action.payload.user.email;
+          state.avatarURL = action.payload.user.avatarURL;
           state.isLoggedIn = true;
           state.error = null;
         }

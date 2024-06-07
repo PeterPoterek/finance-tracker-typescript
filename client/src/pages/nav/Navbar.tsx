@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 //#region shadcn imports
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -27,6 +28,7 @@ import {
 //#endregion
 
 import useAuth from "@/hooks/useAuth";
+import { RootState } from "@/redux/store/store";
 
 type Theme = "light" | "dark" | "system";
 
@@ -37,6 +39,8 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
+
+  const { username, avatarURL } = useSelector((state: RootState) => state);
 
   useEffect(() => {
     setCurrentTheme(theme);
@@ -60,7 +64,7 @@ const Navbar = () => {
     logout();
   };
 
-  if (!isLoggedIn) return;
+  if (!isLoggedIn) return null;
 
   return (
     <div className="fixed w-full bg-background text-foreground shadow-md rounded z-50">
@@ -79,7 +83,7 @@ const Navbar = () => {
           />
 
           <div className="flex gap-2.5 items-center">
-            <p>User name</p>
+            <p>{username}</p>
 
             <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <AlertDialogContent>
@@ -102,8 +106,8 @@ const Navbar = () => {
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer hover:scale-105 transition-transform duration-300">
-                    <AvatarImage src="https://placehold.co/460x460?text=IMG" />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarImage src={avatarURL} />
+                    <AvatarFallback>{username.charAt(0)}</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
