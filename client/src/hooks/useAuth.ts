@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
-import { registerUser, loginUser, logoutUser } from "@/redux/slices/userSlice";
+import { registerUser, loginUser } from "@/redux/slices/userSlice";
+import { setLoggedOut } from "@/redux/slices/authSlice";
 
 interface LoginData {
   email: string;
@@ -15,11 +16,11 @@ interface RegisterData {
 }
 
 const useAuth = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch<AppDispatch>();
 
   const logout = () => {
-    return dispatch(logoutUser());
+    dispatch(setLoggedOut());
   };
 
   const login = async (data: LoginData) => {

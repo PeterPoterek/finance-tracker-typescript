@@ -1,15 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../lib/axiosInstance";
+import { setLoggedIn } from "@/redux/slices/authSlice";
 
 interface UserState {
   _id: string;
   username: string;
   email: string;
   avatarURL: string;
-  isLoggedIn: boolean;
-  loading: boolean;
   error: string | null;
-  accessToken: string | null;
 }
 
 interface RegisterUserData {
@@ -28,10 +26,7 @@ const initialState: UserState = {
   username: "",
   email: "",
   avatarURL: "",
-  isLoggedIn: false,
-  loading: false,
   error: null,
-  accessToken: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -56,8 +51,9 @@ export const registerUser = createAsyncThunk(
 
 export const loginUser = createAsyncThunk(
   "user/login",
-  async (userData: LoginUserData, { rejectWithValue }) => {
+  async (userData: LoginUserData, { rejectWithValue, dispatch }) => {
     try {
+      dispatch(setLoggedIn());
       const response = await axiosInstance.post("/api/auth/login", userData);
       console.log(response.data);
 
@@ -74,94 +70,51 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-export const refreshAccessToken = createAsyncThunk(
-  "user/refreshToken",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axiosInstance.get("/api/auth/refresh");
-      const { accessToken } = response.data;
-      console.log(response.data);
-
-      return accessToken;
-    } catch (error: any) {
-      console.error("Error refreshing access token:", error);
-      return rejectWithValue({ error: "Failed to refresh access token" });
-    }
-  }
-);
-
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logoutUser: () => {
-      return { ...initialState };
-    },
-    userLoggedIn: state => {
-      state.isLoggedIn = true;
+    setUserError: (state, action: PayloadAction<string | null>) => {
+      state.error = action.payload;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(registerUser.pending, state => {
-        state.loading = true;
-        state.error = null;
-      })
       .addCase(
         registerUser.fulfilled,
         (
           state,
-          action: PayloadAction<{
-            message: string;
-            user?: UserState;
-          }>
+          action: PayloadAction<{ message: string; user?: UserState }>
         ) => {
-          state.loading = false;
-
           if (action.payload.user) {
-            state.loading = false;
-            state.isLoggedIn = true;
-            state._id = action.payload.user._id;
-            state.username = action.payload.user.username;
-            state.email = action.payload.user.email;
-            state.avatarURL = action.payload.user.avatarURL;
+            const { _id, username, email, avatarURL } = action.payload.user;
+            state._id = _id;
+            state.username = username;
+            state.email = email;
+            state.avatarURL = avatarURL;
             state.error = null;
           }
-          state.isLoggedIn = true;
-          state.error = null;
         }
       )
       .addCase(registerUser.rejected, (state, action: PayloadAction<any>) => {
-        state.loading = false;
         state.error = action.payload.error;
-      })
-      .addCase(loginUser.pending, state => {
-        state.loading = true;
-        state.error = null;
       })
       .addCase(
         loginUser.fulfilled,
-        (
-          state,
-          action: PayloadAction<{
-            user: UserState;
-          }>
-        ) => {
-          state.loading = false;
-          state._id = action.payload.user._id;
-          state.username = action.payload.user.username;
-          state.email = action.payload.user.email;
-          state.avatarURL = action.payload.user.avatarURL;
-          state.isLoggedIn = true;
+        (state, action: PayloadAction<{ user: UserState }>) => {
+          const { _id, username, email, avatarURL } = action.payload.user;
+          state._id = _id;
+          state.username = username;
+          state.email = email;
+          state.avatarURL = avatarURL;
           state.error = null;
         }
       )
       .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
-        state.loading = false;
         state.error = action.payload.error;
       });
   },
 });
 
-export const { logoutUser, userLoggedIn } = userSlice.actions;
+export const { setUserError } = userSlice.actions;
 export default userSlice.reducer;
