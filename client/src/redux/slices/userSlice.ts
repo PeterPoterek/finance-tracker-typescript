@@ -9,6 +9,7 @@ interface UserState {
   isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
+  accessToken: string | null;
 }
 
 interface RegisterUserData {
@@ -30,6 +31,7 @@ const initialState: UserState = {
   isLoggedIn: false,
   loading: false,
   error: null,
+  accessToken: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -37,9 +39,13 @@ export const registerUser = createAsyncThunk(
   async (userData: RegisterUserData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/api/auth/register", userData);
+      console.log(response.data);
+
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
+        console.error(error.response.data);
+
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue({ error: "Network Error" });
@@ -53,9 +59,13 @@ export const loginUser = createAsyncThunk(
   async (userData: LoginUserData, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/api/auth/login", userData);
+      console.log(response.data);
+
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {
+        console.error(error.response.data);
+
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue({ error: "Network Error" });
@@ -64,11 +74,27 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+export const refreshAccessToken = createAsyncThunk(
+  "user/refreshToken",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/api/auth/refresh");
+      const { accessToken } = response.data;
+      console.log(response.data);
+
+      return accessToken;
+    } catch (error: any) {
+      console.error("Error refreshing access token:", error);
+      return rejectWithValue({ error: "Failed to refresh access token" });
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logoutUser: state => {
+    logoutUser: () => {
       return { ...initialState };
     },
     userLoggedIn: state => {
@@ -87,14 +113,20 @@ const userSlice = createSlice({
           state,
           action: PayloadAction<{
             message: string;
-            user: UserState;
+            user?: UserState;
           }>
         ) => {
           state.loading = false;
-          state._id = action.payload.user._id;
-          state.username = action.payload.user.username;
-          state.email = action.payload.user.email;
-          state.avatarURL = action.payload.user.avatarURL;
+
+          if (action.payload.user) {
+            state.loading = false;
+            state.isLoggedIn = true;
+            state._id = action.payload.user._id;
+            state.username = action.payload.user.username;
+            state.email = action.payload.user.email;
+            state.avatarURL = action.payload.user.avatarURL;
+            state.error = null;
+          }
           state.isLoggedIn = true;
           state.error = null;
         }
