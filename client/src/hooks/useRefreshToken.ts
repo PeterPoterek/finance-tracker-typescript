@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { refreshAccessToken } from "../redux/slices/userSlice";
+import { refreshAccessToken } from "../redux/slices/authSlice";
 import { AppDispatch, RootState } from "@/redux/store/store";
 
 const useRefreshToken = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { accessToken, loading } = useSelector(
-    (state: RootState) => state.user
+    (state: RootState) => state.auth
   );
 
   useEffect(() => {
