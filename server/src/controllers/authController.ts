@@ -5,7 +5,6 @@ import gravatar from "gravatar";
 import jwt from "jsonwebtoken";
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "ACCESS_TOKEN_SECRET";
-
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET";
 
 interface MongoDBError extends Error {
@@ -53,8 +52,11 @@ export const handleLogin = async (req: Request, res: Response) => {
 
     const maxAge = 24 * 60 * 60 * 1000;
 
-    res.cookie("jwt", refreshToken, { httpOnly: true, maxAge });
-    // res.cookie("jwt", refreshToken, { httpOnly: true, maxAge ,secure: true});
+    res.cookie("jwt", refreshToken, {
+      httpOnly: true,
+      maxAge,
+      secure: process.env.NODE_ENV === "production",
+    });
 
     res.status(200).json({
       message: "Login successful",
@@ -125,8 +127,10 @@ export const handleLogout = async (req: Request, res: Response) => {
     return res.sendStatus(204);
   }
 
-  res.clearCookie("jwt", { httpOnly: true });
-  // res.clearCookie("jwt", { httpOnly: true, secure: true });
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
 
   res.status(200).json({ message: "Logout successful" });
 };
