@@ -15,10 +15,8 @@ interface RegisterData {
 }
 
 const useAuth = () => {
-  const isLoggedIn = useSelector((state: RootState) => state.isLoggedIn);
+  const isLoggedIn = useSelector((state: RootState) => state.user.isLoggedIn);
   const dispatch = useDispatch<AppDispatch>();
-
-  console.log(isLoggedIn);
 
   const logout = () => {
     return dispatch(logoutUser());

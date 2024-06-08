@@ -25,8 +25,6 @@ import {
 
 //#endregion
 
-import { useNavigate } from "react-router-dom";
-
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -50,10 +48,6 @@ interface RegisterData {
 }
 
 const AuthForm: React.FC = () => {
-  const navigate = useNavigate();
-  // const location = useLocation();
-  // const from = location.state?.from?.pathname ||"/dashboard";
-
   const { login, register } = useAuth();
 
   const loginForm = useForm<LoginData>({
@@ -74,22 +68,14 @@ const AuthForm: React.FC = () => {
     },
   });
   const handleLogin: SubmitHandler<LoginData> = async data => {
-    try {
-      const response = await login(data);
-      if (response.type.endsWith("/fulfilled")) {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
+    await login(data);
   };
 
   const handleRegister: SubmitHandler<RegisterData> = async data => {
     try {
-      const response = await register(data);
-      if (response.type.endsWith("/fulfilled")) {
-        navigate("/dashboard");
-      }
+      await register(data);
+
+      await login(data);
     } catch (error) {
       console.error("Registration failed:", error);
     }

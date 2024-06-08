@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 //#region shadcn imports
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -28,7 +27,7 @@ import {
 //#endregion
 
 import useAuth from "@/hooks/useAuth";
-import { RootState } from "@/redux/store/store";
+import useUser from "@/hooks/useUser";
 
 type Theme = "light" | "dark" | "system";
 
@@ -40,7 +39,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
 
-  const { username, avatarURL } = useSelector((state: RootState) => state);
+  const { username, avatarURL } = useUser();
 
   useEffect(() => {
     setCurrentTheme(theme);
