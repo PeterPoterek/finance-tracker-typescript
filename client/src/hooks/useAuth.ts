@@ -1,7 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
 import { registerUser, loginUser } from "@/redux/slices/userSlice";
-import { logoutUser } from "@/redux/slices/authSlice";
+import { logoutUser, setLoggedOut } from "@/redux/slices/authSlice";
+import { useEffect } from "react";
 
 interface LoginData {
   email: string;
@@ -20,6 +21,10 @@ const useAuth = () => {
   const loading = useSelector((state: RootState) => state.auth.loading);
   const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (!accessToken && isLoggedIn) dispatch(setLoggedOut());
+  }, [accessToken]);
 
   const logout = () => {
     if (accessToken) {
