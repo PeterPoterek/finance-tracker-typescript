@@ -40,14 +40,14 @@ export const handleLogin = async (req: Request, res: Response) => {
       { userId: user._id, username: user.username },
       ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "15s",
+        expiresIn: "1m",
       }
     );
 
     const refreshToken = jwt.sign(
       { userId: user._id, username: user.username },
       REFRESH_TOKEN_SECRET,
-      { expiresIn: "20s" }
+      { expiresIn: "30m" }
     );
 
     const maxAge = 24 * 60 * 60 * 1000;
