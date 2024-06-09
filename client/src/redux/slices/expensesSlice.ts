@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { axiosInstance } from "../../lib/axiosInstance";
+import { axiosPrivateInstance } from "../../lib/axiosInstance";
 import { RootState } from "../store/store";
 
 interface Expense {
@@ -34,15 +34,18 @@ export const fetchExpenses = createAsyncThunk(
         throw new Error("No access token available");
       }
 
-      const response = await axiosInstance.get("/api/expenses", {
+      const response = await axiosPrivateInstance.get("/api/expenses/", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
+
       return response.data;
     } catch (error: any) {
       console.error("Error fetching expenses:", error);
       if (error.response && error.response.data) {
+        console.error(error.response);
+
         return rejectWithValue(error.response.data);
       } else {
         return rejectWithValue({ error: "Network Error" });
