@@ -18,7 +18,7 @@ const RedirectIfAuthenticated = lazy(
 );
 
 const App = () => {
-  const isLoading = useSelector((state: RootState) => state.user.loading);
+  const isLoading = useSelector((state: RootState) => state.auth.loading);
 
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
