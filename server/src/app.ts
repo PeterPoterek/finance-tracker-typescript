@@ -10,6 +10,8 @@ import refreshRouter from "./routes/api/refreshRouter";
 import credentials from "./middleware/credentials";
 import { allowedOrigins } from "./config/allowedOrigins";
 import userRouter from "./routes/api/userRouter";
+import expenseRouter from "./routes/api/expenseRouter";
+import categoryRouter from "./routes/api/categoryRouter";
 
 const app: Express = express();
 
@@ -29,6 +31,8 @@ app.use(logEvent);
 app.use("/api/auth", authRouter);
 app.use("/api/refresh", refreshRouter);
 app.use("/api/user", userRouter);
+app.use("/api/expenses", expenseRouter);
+app.use("/api/categories", categoryRouter);
 
 app.use((req, res) => {
   res.status(404).json({ message: `Not found - ${req.path}` });

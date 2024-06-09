@@ -40,7 +40,7 @@ export const handleLogin = async (req: Request, res: Response) => {
       { userId: user._id, username: user.username },
       ACCESS_TOKEN_SECRET,
       {
-        expiresIn: "1m",
+        expiresIn: "5m",
       }
     );
 
