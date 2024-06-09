@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
 import { registerUser, loginUser } from "@/redux/slices/userSlice";
-import { setLoggedOut } from "@/redux/slices/authSlice";
+import { logoutUser } from "@/redux/slices/authSlice";
 
 interface LoginData {
   email: string;
@@ -17,10 +17,16 @@ interface RegisterData {
 
 const useAuth = () => {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const loading = useSelector((state: RootState) => state.auth.loading);
+  const accessToken = useSelector((state: RootState) => state.auth.accessToken);
   const dispatch = useDispatch<AppDispatch>();
 
   const logout = () => {
-    dispatch(setLoggedOut());
+    if (accessToken) {
+      dispatch(logoutUser(accessToken));
+    } else {
+      console.error("No access token found");
+    }
   };
 
   const login = async (data: LoginData) => {
@@ -33,7 +39,7 @@ const useAuth = () => {
     return response;
   };
 
-  return { isLoggedIn, logout, login, register };
+  return { accessToken, isLoggedIn, loading, logout, login, register };
 };
 
 export default useAuth;
