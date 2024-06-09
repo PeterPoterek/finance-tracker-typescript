@@ -36,7 +36,8 @@ const initialState: UserState = {
 
 export const registerUser = createAsyncThunk(
   "user/register",
-  async (userData: RegisterUserData, { rejectWithValue }) => {
+  async (userData: RegisterUserData, { rejectWithValue, dispatch }) => {
+    dispatch(setLoading(true));
     try {
       const response = await axiosInstance.post("/api/auth/register", userData);
       return response.data;
@@ -46,10 +47,11 @@ export const registerUser = createAsyncThunk(
       } else {
         return rejectWithValue({ error: "Network Error" });
       }
+    } finally {
+      dispatch(setLoading(false));
     }
   }
 );
-
 export const loginUser = createAsyncThunk(
   "user/login",
   async (userData: LoginUserData, { rejectWithValue, dispatch }) => {
@@ -70,6 +72,7 @@ export const loginUser = createAsyncThunk(
     }
   }
 );
+
 export const getCurrentUser = createAsyncThunk(
   "user/getCurrentUser",
   async (_, { getState, rejectWithValue }) => {
