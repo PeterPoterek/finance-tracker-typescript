@@ -12,9 +12,9 @@ import { useSelector } from "react-redux";
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Auth = lazy(() => import("./pages/auth/Auth"));
 const UserProfile = lazy(() => import("./pages/account/UserProfile"));
-const RequireAuth = lazy(() => import("./pages/protectedRoute/RequireAuth"));
+const RequireAuth = lazy(() => import("./pages/accessControl/RequireAuth"));
 const RedirectIfAuthenticated = lazy(
-  () => import("./pages/protectedRoute/RedirectIfAuthenticated")
+  () => import("./pages/accessControl/RedirectIfAuthenticated")
 );
 
 const App = () => {

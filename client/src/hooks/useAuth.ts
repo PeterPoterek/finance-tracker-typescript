@@ -22,7 +22,9 @@ const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const logout = () => {
-    dispatch(logoutUser());
+    if (accessToken) {
+      dispatch(logoutUser());
+    }
   };
 
   const login = async (data: LoginData) => {
