@@ -22,11 +22,7 @@ const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const logout = () => {
-    if (accessToken) {
-      dispatch(logoutUser(accessToken));
-    } else {
-      console.error("No access token found");
-    }
+    dispatch(logoutUser());
   };
 
   const login = async (data: LoginData) => {

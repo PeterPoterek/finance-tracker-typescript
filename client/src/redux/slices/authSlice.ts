@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosInstance } from "../../lib/axiosInstance";
+import { RootState } from "../store/store";
 
 interface AuthState {
   isLoggedIn: boolean;
@@ -30,8 +31,11 @@ export const getRefreshAccessToken = createAsyncThunk(
 );
 export const logoutUser = createAsyncThunk(
   "auth/logout",
-  async (accessToken: string, { rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
       const response = await axiosInstance.post("/api/auth/logout", null, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
