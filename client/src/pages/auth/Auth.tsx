@@ -4,15 +4,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 
 import AuthForm from "./AuthForm";
 
-import useRefreshToken from "@/hooks/useRefreshToken";
-
 const Auth = () => {
-  const refresh = useRefreshToken();
-
   return (
     <div className="max-w-5xl m-auto flex pt-[10rem] gap-5">
       <div className="flex justify-center items-center flex-col p-[5rem] gap-5 w-[56rem] ">
@@ -115,8 +110,6 @@ const Auth = () => {
       <div>
         <AuthForm />
       </div>
-
-      <Button onClick={() => refresh()}>Button</Button>
     </div>
   );
 };
