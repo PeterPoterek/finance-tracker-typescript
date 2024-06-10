@@ -31,7 +31,7 @@ const initialExpensesState: ExpensesState = {
 
 export const fetchExpenses = createAsyncThunk(
   "expenses/fetchExpenses",
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState() as RootState;
       const accessToken = state.auth.accessToken;
@@ -45,6 +45,8 @@ export const fetchExpenses = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
+
+      dispatch(fetchExpenses());
 
       return response.data.expenses;
     } catch (error: any) {
