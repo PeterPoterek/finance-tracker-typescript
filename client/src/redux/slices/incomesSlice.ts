@@ -30,7 +30,7 @@ const initialIncomesState: IncomesState = {
 
 export const fetchIncomes = createAsyncThunk(
   "incomes/fetchIncomes",
-  async (_, { getState, dispatch, rejectWithValue }) => {
+  async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState() as RootState;
       const accessToken = state.auth.accessToken;
@@ -45,7 +45,6 @@ export const fetchIncomes = createAsyncThunk(
         },
       });
 
-      dispatch(fetchIncomes());
       return response.data.incomes;
     } catch (error: any) {
       console.error("Error fetching incomes:", error);

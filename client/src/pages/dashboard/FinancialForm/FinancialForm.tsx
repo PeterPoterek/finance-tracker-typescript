@@ -51,8 +51,8 @@ interface FinancialFormProps {
 
 const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   const { expenseCategories, incomeCategories } = useCategories();
-  const { addExpenseData } = useExpenses();
-  const { addIncomeData } = useIncomes();
+  const { fetchExpensesData, addExpenseData } = useExpenses();
+  const { fetchIncomesData, addIncomeData } = useIncomes();
 
   const defaultValues = {
     description: "",
@@ -72,7 +72,13 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
     console.log(values);
     form.reset(defaultValues);
 
-    view === "expense" ? addExpenseData(values) : addIncomeData(values);
+    if (view === "expense") {
+      addExpenseData(values);
+      fetchExpensesData();
+    } else {
+      addIncomeData(values);
+      fetchIncomesData();
+    }
   };
 
   useEffect(() => {
