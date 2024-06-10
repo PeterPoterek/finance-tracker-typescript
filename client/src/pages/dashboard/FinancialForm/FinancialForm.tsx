@@ -39,8 +39,9 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import useCategories from "@/hooks/useCategories";
 //#endregion
+import useCategories from "@/hooks/useCategories";
+import { useEffect } from "react";
 
 interface FinancialFormProps {
   view: "expense" | "income";
@@ -64,11 +65,13 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
 
   const onSubmit = (values: FinancialEntry) => {
     values.type = view;
-
     console.log(values);
-
     form.reset(defaultValues);
   };
+
+  useEffect(() => {
+    form.setValue("category", "");
+  }, [view, form]);
 
   return (
     <div className="pt-[1rem] pb-[3.5rem]">

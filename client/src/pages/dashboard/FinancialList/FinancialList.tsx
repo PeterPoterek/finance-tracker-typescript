@@ -7,6 +7,7 @@ import { FinancialEntry } from "@/services/schemas/formSchemas";
 
 import useExpenses from "@/hooks/useExpenses";
 import useIncomes from "@/hooks/useIncomes";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 const FinancialList = () => {
   const [financialData, setFinancialData] = useState<FinancialEntry[]>([]);
@@ -14,18 +15,22 @@ const FinancialList = () => {
   const { expenses, fetchExpensesData } = useExpenses();
   const { incomes, fetchIncomesData } = useIncomes();
 
+  const axiosPrivate = useAxiosPrivate();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         fetchExpensesData();
         fetchIncomesData();
+
+        console.log("Fetch table data");
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [axiosPrivate]);
 
   useEffect(() => {
     const combineData = () => {
