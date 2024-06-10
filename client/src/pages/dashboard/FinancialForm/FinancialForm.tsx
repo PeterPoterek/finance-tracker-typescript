@@ -42,6 +42,7 @@ import { cn } from "@/lib/utils";
 //#endregion
 import useCategories from "@/hooks/useCategories";
 import { useEffect } from "react";
+import useExpenses from "@/hooks/useExpenses";
 
 interface FinancialFormProps {
   view: "expense" | "income";
@@ -49,6 +50,7 @@ interface FinancialFormProps {
 
 const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   const { expenseCategories, incomeCategories } = useCategories();
+  const { addExpenseData } = useExpenses();
 
   const defaultValues = {
     description: "",
@@ -67,6 +69,8 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
     values.type = view;
     console.log(values);
     form.reset(defaultValues);
+
+    addExpenseData(values);
   };
 
   useEffect(() => {

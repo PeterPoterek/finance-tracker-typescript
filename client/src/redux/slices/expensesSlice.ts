@@ -11,6 +11,12 @@ interface Expense {
   createdAt: Date;
 }
 
+interface AddExpenseRequest {
+  description: string;
+  value: number;
+  category: string;
+}
+
 interface ExpensesState {
   expenses: Expense[];
   loading: boolean;
@@ -43,6 +49,41 @@ export const fetchExpenses = createAsyncThunk(
       return response.data.expenses;
     } catch (error: any) {
       console.error("Error fetching expenses:", error);
+      if (error.response && error.response.data) {
+        console.error(error.response);
+
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
+export const addExpense = createAsyncThunk(
+  "expenses/addExpense",
+  async (expenseData: AddExpenseRequest, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      const response = await axiosPrivateInstance.post(
+        "/api/expenses/",
+        expenseData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data.expense;
+    } catch (error: any) {
+      console.error("Error adding expense:", error);
       if (error.response && error.response.data) {
         console.error(error.response);
 
