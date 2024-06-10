@@ -48,10 +48,10 @@ interface FinancialFormProps {
 const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   const defaultValues = {
     description: "",
-    transactionValue: 0,
-    transactionCategory: "",
+    value: 0,
+    category: "",
     createdAt: undefined,
-    transactionType: "",
+    type: "",
   };
 
   const form = useForm<z.infer<typeof financialSchema>>({
@@ -60,7 +60,8 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   });
 
   const onSubmit = (values: FinancialEntry) => {
-    values.transactionType = view;
+    values.type = view;
+
     console.log(values);
 
     form.reset(defaultValues);
@@ -96,7 +97,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
 
           <FormField
             control={form.control}
-            name="transactionValue"
+            name="value"
             render={({ field }) => (
               <FormItem className="col-span-1">
                 <FormLabel>Value</FormLabel>
@@ -128,7 +129,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
 
           <FormField
             control={form.control}
-            name="transactionCategory"
+            name="category"
             render={({ field }) => (
               <FormItem className="col-span-1">
                 <FormLabel>Transaction Category</FormLabel>
@@ -186,7 +187,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      disabled={(date) =>
+                      disabled={date =>
                         date > new Date() || date < new Date("1900-01-01")
                       }
                       initialFocus
