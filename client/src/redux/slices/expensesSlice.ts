@@ -8,7 +8,7 @@ interface Expense {
   value: number;
   category: string;
   type: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 interface ExpensesState {

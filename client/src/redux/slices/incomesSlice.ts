@@ -8,7 +8,7 @@ interface Income {
   value: number;
   category: string;
   type: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 interface IncomesState {

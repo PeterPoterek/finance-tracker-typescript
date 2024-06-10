@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const financialSchema = z.object({
-  _id: z.string(),
+  _id: z.string().optional(),
   description: z.string().min(1, "Required"),
   value: z.number().min(1, "Required"),
 

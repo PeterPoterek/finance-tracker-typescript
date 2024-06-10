@@ -53,8 +53,8 @@ export function DataTable<TData, TValue>({
   const filteredData = useMemo(() => {
     return data.filter((item: any) => {
       if (showExpenses && showIncomes) return true;
-      if (showExpenses) return item.transactionType === "expense";
-      if (showIncomes) return item.transactionType === "income";
+      if (showExpenses) return item.type === "expense";
+      if (showIncomes) return item.type === "income";
       return false;
     });
   }, [data, showExpenses, showIncomes]);
@@ -87,7 +87,7 @@ export function DataTable<TData, TValue>({
             value={
               (table.getColumn("description")?.getFilterValue() as string) ?? ""
             }
-            onChange={(event) =>
+            onChange={event =>
               table.getColumn("description")?.setFilterValue(event.target.value)
             }
             className="max-w-sm"
@@ -115,15 +115,13 @@ export function DataTable<TData, TValue>({
               <DropdownMenuSeparator />
               {table
                 .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => (
+                .filter(column => column.getCanHide())
+                .map(column => (
                   <DropdownMenuCheckboxItem
                     key={column.id}
                     className="capitalize"
                     checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
+                    onCheckedChange={value => column.toggleVisibility(!!value)}
                   >
                     {column.id}
                   </DropdownMenuCheckboxItem>
@@ -137,9 +135,9 @@ export function DataTable<TData, TValue>({
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {table.getHeaderGroups().map(headerGroup => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
+                {headerGroup.headers.map(header => (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
                       ? null
@@ -154,12 +152,12 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map(row => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  {row.getVisibleCells().map((cell) => (
+                  {row.getVisibleCells().map(cell => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
