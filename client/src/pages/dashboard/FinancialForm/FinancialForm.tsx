@@ -39,6 +39,7 @@ import {
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import useCategories from "@/hooks/useCategories";
 //#endregion
 
 interface FinancialFormProps {
@@ -46,6 +47,8 @@ interface FinancialFormProps {
 }
 
 const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
+  const { expenseCategories, incomeCategories } = useCategories();
+
   const defaultValues = {
     description: "",
     value: 0,
@@ -144,9 +147,17 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {/* Categories will be fetched from db later */}
-                    <SelectItem value="category-1">Category 1</SelectItem>
-                    <SelectItem value="category-2">Category 2</SelectItem>
+                    {view === "expense"
+                      ? expenseCategories.map((category, index) => (
+                          <SelectItem key={index} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))
+                      : incomeCategories.map((category, index) => (
+                          <SelectItem key={index} value={category}>
+                            {category}
+                          </SelectItem>
+                        ))}
                   </SelectContent>
                 </Select>
                 <FormDescription>
