@@ -7,6 +7,8 @@ import axios from "axios";
 import { FinancialEntry } from "@/services/schemas/formSchemas";
 
 import useExpenses from "@/hooks/useExpenses";
+import useIncomes from "@/hooks/useIncomes";
+
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store/store";
@@ -15,17 +17,20 @@ const FinancialList = () => {
   const [financialData, setFinancialData] = useState<FinancialEntry[]>([]);
 
   const { expenses, fetchExpensesData } = useExpenses();
+  const { incomes, fetchIncomesData } = useIncomes();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         fetchExpensesData();
+        fetchIncomesData();
       } catch (error) {
         console.error("Failed to fetch expenses:", error);
       }
     };
 
     console.log(expenses);
+    console.log(incomes);
 
     fetchData();
   }, []);
@@ -41,10 +46,6 @@ const FinancialList = () => {
         ),
       ]);
 
-      const expenses = expensesResponse.data.map((entry: any) => ({
-        ...entry,
-        type: "expense",
-      }));
       const incomes = incomesResponse.data.map((entry: any) => ({
         ...entry,
         type: "income",

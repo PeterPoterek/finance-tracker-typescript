@@ -47,8 +47,9 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       );
     },
   },
+
   {
-    accessorKey: "transactionValue",
+    accessorKey: "value",
     header: ({ column }) => {
       return (
         <Button
@@ -61,8 +62,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       );
     },
     cell: ({ row }) => {
-      const transactionValue = row.original.transactionValue;
-      const transactionType = row.original.transactionType;
+      const transactionValue = row.original.value;
+      const transactionType = row.original.type;
 
       let textColor = "";
       let symbol = "";
@@ -84,7 +85,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     },
   },
   {
-    accessorKey: "transactionCategory",
+    accessorKey: "category",
     header: ({ column }) => {
       return (
         <Button
@@ -99,7 +100,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
   },
 
   {
-    accessorKey: "transactionType",
+    accessorKey: "type",
     header: ({ column }) => {
       return (
         <Button
@@ -141,7 +142,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       const { toast } = useToast();
 
       const [transactionValue, setTransactionValue] = useState(
-        transaction.transactionValue
+        transaction.value
       );
       const [action, setAction] = useState<"edit" | "delete" | null>(null);
 
@@ -195,7 +196,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                 <Input
                   id="description"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={e => setDescription(e.target.value)}
                   className="col-span-3"
                 />
               </div>
@@ -209,7 +210,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                   pattern="[0-9]*"
                   id="transactionValue"
                   value={transactionValue}
-                  onChange={(e) => setTransactionValue(Number(e.target.value))}
+                  onChange={e => setTransactionValue(Number(e.target.value))}
                   className="col-span-3"
                 />
               </div>

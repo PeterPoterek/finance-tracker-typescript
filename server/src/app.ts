@@ -12,6 +12,7 @@ import { allowedOrigins } from "./config/allowedOrigins";
 import userRouter from "./routes/api/userRouter";
 import expenseRouter from "./routes/api/expenseRouter";
 import categoryRouter from "./routes/api/categoryRouter";
+import incomeRouter from "./routes/api/incomeRouter";
 
 const app: Express = express();
 
@@ -32,6 +33,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/refresh", refreshRouter);
 app.use("/api/user", userRouter);
 app.use("/api/expenses", expenseRouter);
+app.use("/api/incomes", incomeRouter);
 app.use("/api/categories", categoryRouter);
 
 app.use((req, res) => {

@@ -1,13 +1,13 @@
 import { z } from "zod";
 
 export const financialSchema = z.object({
-  // id: z.string(),
+  _id: z.string(),
   description: z.string().min(1, "Required"),
-  transactionValue: z.number().min(1, "Required"),
+  value: z.number().min(1, "Required"),
 
-  transactionCategory: z.string().min(1, "Required"),
+  category: z.string().min(1, "Required"),
+  type: z.string(),
   createdAt: z.date(),
-  transactionType: z.string(),
 });
 
 export type FinancialEntry = z.infer<typeof financialSchema>;

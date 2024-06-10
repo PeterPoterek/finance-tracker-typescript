@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { axiosPrivateInstance } from "../../lib/axiosInstance";
 import { RootState } from "../store/store";
 
-interface Expense {
+interface Income {
   id: string;
   description: string;
   value: number;
@@ -11,20 +11,20 @@ interface Expense {
   createdAt: string;
 }
 
-interface ExpensesState {
-  expenses: Expense[];
+interface IncomesState {
+  incomes: Income[];
   loading: boolean;
   error: string | null;
 }
 
-const initialExpensesState: ExpensesState = {
-  expenses: [],
+const initialIncomesState: IncomesState = {
+  incomes: [],
   loading: false,
   error: null,
 };
 
-export const fetchExpenses = createAsyncThunk(
-  "expenses/fetchExpenses",
+export const fetchIncomes = createAsyncThunk(
+  "incomes/fetchIncomes",
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState() as RootState;
@@ -34,15 +34,15 @@ export const fetchExpenses = createAsyncThunk(
         throw new Error("No access token available");
       }
 
-      const response = await axiosPrivateInstance.get("/api/expenses/", {
+      const response = await axiosPrivateInstance.get("/api/incomes/", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
       });
 
-      return response.data.expenses;
+      return response.data.incomes;
     } catch (error: any) {
-      console.error("Error fetching expenses:", error);
+      console.error("Error fetching incomes:", error);
       if (error.response && error.response.data) {
         console.error(error.response);
 
@@ -54,36 +54,36 @@ export const fetchExpenses = createAsyncThunk(
   }
 );
 
-const expensesSlice = createSlice({
-  name: "expenses",
-  initialState: initialExpensesState,
+const incomesSlice = createSlice({
+  name: "incomes",
+  initialState: initialIncomesState,
   reducers: {
-    clearExpenses: state => {
-      state.expenses = [];
+    clearIncomes: state => {
+      state.incomes = [];
       state.error = null;
       state.loading = false;
     },
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchExpenses.pending, state => {
+      .addCase(fetchIncomes.pending, state => {
         state.loading = true;
         state.error = null;
       })
       .addCase(
-        fetchExpenses.fulfilled,
-        (state, action: PayloadAction<Expense[]>) => {
+        fetchIncomes.fulfilled,
+        (state, action: PayloadAction<Income[]>) => {
           state.loading = false;
-          state.expenses = action.payload;
+          state.incomes = action.payload;
           state.error = null;
         }
       )
-      .addCase(fetchExpenses.rejected, (state, action: PayloadAction<any>) => {
+      .addCase(fetchIncomes.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload.error;
       });
   },
 });
 
-export const { clearExpenses } = expensesSlice.actions;
-export default expensesSlice.reducer;
+export const { clearIncomes } = incomesSlice.actions;
+export default incomesSlice.reducer;
