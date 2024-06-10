@@ -56,3 +56,91 @@ export const addExpense = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
+export const getExpenseById = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ error: "User ID not found" });
+    }
+
+    const expense = await ExpenseModel.findOne({ _id: id, user: userId });
+
+    if (!expense) {
+      return res.status(404).json({ error: "Expense not found" });
+    }
+
+    res.status(200).json({ expense });
+  } catch (error) {
+    console.error("Error fetching expense:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const updateExpense = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    const { id } = req.params;
+    const { description, value, category } = req.body;
+
+    const expenseData = expenseSchemaDefinition.parse({
+      description,
+      value,
+      category,
+      type: "expense",
+    });
+
+    if (!userId) {
+      return res.status(401).json({ error: "User ID not found" });
+    }
+
+    const updatedExpense = await ExpenseModel.findOneAndUpdate(
+      { _id: id, user: userId },
+      {
+        description: expenseData.description,
+        value: expenseData.value,
+        category: expenseData.category,
+        type: "expense",
+      },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedExpense) {
+      return res.status(404).json({ error: "Expense not found" });
+    }
+
+    res.status(200).json({ message: "Expense updated successfully", expense: updatedExpense });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      console.error("Zod validation error:", error);
+      return res.status(400).json({ error: "Validation Error", details: error.errors });
+    }
+
+    console.error("Error updating expense:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const deleteExpense = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.userId;
+    const { id } = req.params;
+
+    if (!userId) {
+      return res.status(401).json({ error: "User ID not found" });
+    }
+
+    const deletedExpense = await ExpenseModel.findOneAndDelete({ _id: id, user: userId });
+
+    if (!deletedExpense) {
+      return res.status(404).json({ error: "Expense not found" });
+    }
+
+    res.status(200).json({ message: "Expense deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting expense:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
