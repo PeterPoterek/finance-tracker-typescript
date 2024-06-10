@@ -16,6 +16,11 @@ interface IncomesState {
   loading: boolean;
   error: string | null;
 }
+interface AddIncomeRequest {
+  description: string;
+  value: number;
+  category: string;
+}
 
 const initialIncomesState: IncomesState = {
   incomes: [],
@@ -25,7 +30,7 @@ const initialIncomesState: IncomesState = {
 
 export const fetchIncomes = createAsyncThunk(
   "incomes/fetchIncomes",
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { getState, dispatch, rejectWithValue }) => {
     try {
       const state = getState() as RootState;
       const accessToken = state.auth.accessToken;
@@ -40,9 +45,45 @@ export const fetchIncomes = createAsyncThunk(
         },
       });
 
+      dispatch(fetchIncomes());
       return response.data.incomes;
     } catch (error: any) {
       console.error("Error fetching incomes:", error);
+      if (error.response && error.response.data) {
+        console.error(error.response);
+
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
+export const addIncome = createAsyncThunk(
+  "incomes/addIncome",
+  async (incomeDate: AddIncomeRequest, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      const response = await axiosPrivateInstance.post(
+        "/api/incomes/",
+        incomeDate,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data.income;
+    } catch (error: any) {
+      console.error("Error adding Income:", error);
       if (error.response && error.response.data) {
         console.error(error.response);
 

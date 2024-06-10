@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
-import { fetchIncomes } from "@/redux/slices/incomesSlice";
+import { addIncome, fetchIncomes } from "@/redux/slices/incomesSlice";
 
 interface Income {
   id: string;
@@ -9,6 +9,12 @@ interface Income {
   category: string;
   type: string;
   createdAt: Date;
+}
+
+interface AddIncomesRequest {
+  description: string;
+  value: number;
+  category: string;
 }
 
 const useIncomes = () => {
@@ -21,7 +27,11 @@ const useIncomes = () => {
     dispatch(fetchIncomes());
   };
 
-  return { incomes, fetchIncomesData };
+  const addIncomeData = (incomeData: AddIncomesRequest) => {
+    dispatch(addIncome(incomeData));
+  };
+
+  return { incomes, fetchIncomesData, addIncomeData };
 };
 
 export default useIncomes;
