@@ -27,7 +27,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -37,6 +36,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { useToast } from "@/components/ui/use-toast";
 import { useState, useEffect } from "react";
 import useCategories from "@/hooks/useCategories";
+import useExpenses from "@/hooks/useExpenses";
 
 export const Columns: ColumnDef<FinancialEntry>[] = [
   {
@@ -156,6 +156,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       );
 
       const { toast } = useToast();
+      const { updateExpenseData } = useExpenses();
 
       const { expenseCategories, incomeCategories } = useCategories();
       const [selectCategories, setSelectCategories] = useState<string[]>([]);
@@ -180,12 +181,23 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
 
       const handleEdit = async () => {
         try {
-          console.log(transaction);
+          const updatedExpenseData = {
+            description: transactionDescription,
+            value: transactionValue,
+            category: transactionCategory,
+          };
 
-          toast({
-            title: `Edited transaction 📝`,
-            description: `Sucesfully edited ${transaction.description}`,
-          });
+          // Check if _id exists before calling updateExpenseData
+          if (transaction._id) {
+            await updateExpenseData(transaction._id, updatedExpenseData);
+
+            toast({
+              title: `Edited transaction 📝`,
+              description: `Successfully edited ${transaction.description}`,
+            });
+          } else {
+            console.error("Transaction ID is undefined");
+          }
         } catch (error) {
           console.error("Error updating transaction:", error);
         } finally {

@@ -161,6 +161,27 @@ const expensesSlice = createSlice({
       .addCase(fetchExpenses.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload.error;
+      })
+      .addCase(updateExpense.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        updateExpense.fulfilled,
+        (state, action: PayloadAction<Expense>) => {
+          state.loading = false;
+          const updatedExpenseIndex = state.expenses.findIndex(
+            expense => expense.id === action.payload.id
+          );
+          if (updatedExpenseIndex !== -1) {
+            state.expenses[updatedExpenseIndex] = action.payload;
+          }
+          state.error = null;
+        }
+      )
+      .addCase(updateExpense.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.error;
       });
   },
 });

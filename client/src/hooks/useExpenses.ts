@@ -1,6 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../redux/store/store";
-import { addExpense, fetchExpenses } from "@/redux/slices/expensesSlice";
+import {
+  addExpense,
+  fetchExpenses,
+  updateExpense,
+} from "@/redux/slices/expensesSlice";
 
 interface Expense {
   id: string;
@@ -30,7 +34,14 @@ const useExpenses = () => {
     dispatch(addExpense(expenseData));
   };
 
-  return { expenses, fetchExpensesData, addExpenseData };
+  const updateExpenseData = (
+    id: string,
+    updatedExpenseData: Partial<AddExpenseRequest>
+  ) => {
+    dispatch(updateExpense({ id, updatedExpenseData }));
+  };
+
+  return { expenses, fetchExpensesData, addExpenseData, updateExpenseData };
 };
 
 export default useExpenses;
