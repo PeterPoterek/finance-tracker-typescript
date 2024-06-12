@@ -35,7 +35,7 @@ import { Toaster } from "@/components/ui/toaster";
 //#endregion
 
 import { useToast } from "@/components/ui/use-toast";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useCategories from "@/hooks/useCategories";
 
 export const Columns: ColumnDef<FinancialEntry>[] = [
@@ -161,6 +161,22 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       const [selectCategories, setSelectCategories] = useState<string[]>([]);
 
       const [action, setAction] = useState<"edit" | "delete" | null>(null);
+
+      useEffect(() => {
+        if (transaction.category === "expense") {
+          setSelectCategories(expenseCategories);
+        } else if (transaction.category === "income") {
+          setSelectCategories(incomeCategories);
+        }
+      }, [transaction.category, expenseCategories, incomeCategories]);
+
+      useEffect(() => {
+        if (!isDialogOpen) {
+          setTransactionDescription(transaction.description);
+          setTransactionValue(transaction.value);
+          setTransactionCategory(transaction.category);
+        }
+      }, [isDialogOpen, transaction]);
 
       const handleEdit = async () => {
         try {
