@@ -156,7 +156,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       );
 
       const { toast } = useToast();
-      const { updateExpenseData, fetchExpensesData } = useExpenses();
+      const { updateExpenseData, fetchExpensesData, deleteExpenseData } =
+        useExpenses();
 
       const { expenseCategories, incomeCategories } = useCategories();
       const [selectCategories, setSelectCategories] = useState<string[]>([]);
@@ -206,16 +207,21 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       };
 
       const handleDelete = async (transaction: FinancialEntry) => {
-        console.log(`Deleted : ${transaction.description}`);
-
-        toast({
-          title: `Deleted transaction 🗑️`,
-          description: `Sucesfully deleted ${transaction.description}`,
-        });
-
-        setIsDialogOpen(false);
+        try {
+          if (transaction._id) {
+            deleteExpenseData(transaction._id);
+          }
+          toast({
+            title: `Deleted transaction 🗑️`,
+            description: `Sucesfully deleted ${transaction.description}`,
+          });
+        } catch (error) {
+          console.error("Error updating transaction:", error);
+        } finally {
+          fetchExpensesData();
+          setIsDialogOpen(false);
+        }
       };
-
       const openDialog = (selectedAction: "edit" | "delete") => {
         setTransactionCategory(transaction.category);
 

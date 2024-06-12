@@ -134,6 +134,35 @@ export const updateExpense = createAsyncThunk(
   }
 );
 
+export const deleteExpense = createAsyncThunk(
+  "expenses/deleteExpense",
+  async (id: string, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      await axiosPrivateInstance.delete(`/api/expenses/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      return id;
+    } catch (error: any) {
+      console.error("Error deleting expense:", error);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
 const expensesSlice = createSlice({
   name: "expenses",
   initialState: initialExpensesState,
@@ -180,6 +209,25 @@ const expensesSlice = createSlice({
         }
       )
       .addCase(updateExpense.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(deleteExpense.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        deleteExpense.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          const deletedExpenseId = action.payload;
+          state.expenses = state.expenses.filter(
+            expense => expense.id !== deletedExpenseId
+          );
+          state.error = null;
+        }
+      )
+      .addCase(deleteExpense.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload.error;
       });

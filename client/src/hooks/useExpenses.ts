@@ -4,6 +4,7 @@ import {
   addExpense,
   fetchExpenses,
   updateExpense,
+  deleteExpense,
 } from "@/redux/slices/expensesSlice";
 
 interface Expense {
@@ -14,6 +15,7 @@ interface Expense {
   type: string;
   createdAt: Date;
 }
+
 interface AddExpenseRequest {
   description: string;
   value: number;
@@ -41,7 +43,21 @@ const useExpenses = () => {
     dispatch(updateExpense({ id, updatedExpenseData }));
   };
 
-  return { expenses, fetchExpensesData, addExpenseData, updateExpenseData };
+  const deleteExpenseData = async (id: string) => {
+    try {
+      await dispatch(deleteExpense(id));
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+    }
+  };
+
+  return {
+    expenses,
+    fetchExpensesData,
+    addExpenseData,
+    updateExpenseData,
+    deleteExpenseData,
+  };
 };
 
 export default useExpenses;
