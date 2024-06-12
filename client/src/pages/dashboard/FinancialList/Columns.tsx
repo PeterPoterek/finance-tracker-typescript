@@ -156,7 +156,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       );
 
       const { toast } = useToast();
-      const { updateExpenseData } = useExpenses();
+      const { updateExpenseData, fetchExpensesData } = useExpenses();
 
       const { expenseCategories, incomeCategories } = useCategories();
       const [selectCategories, setSelectCategories] = useState<string[]>([]);
@@ -200,6 +200,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
         } catch (error) {
           console.error("Error updating transaction:", error);
         } finally {
+          fetchExpensesData();
           setIsDialogOpen(false);
         }
       };
