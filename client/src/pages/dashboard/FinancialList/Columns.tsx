@@ -187,7 +187,6 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             category: transactionCategory,
           };
 
-          // Check if _id exists before calling updateExpenseData
           if (transaction._id) {
             await updateExpenseData(transaction._id, updatedExpenseData);
 
@@ -269,7 +268,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                 <Label htmlFor="transactionCategory" className="text-right">
                   Category
                 </Label>
-                <Select>
+                <Select onValueChange={e => setTransactionCategory(e)}>
                   <SelectTrigger className="w-[277.25px]">
                     <SelectValue placeholder={transactionCategory} />
                   </SelectTrigger>
