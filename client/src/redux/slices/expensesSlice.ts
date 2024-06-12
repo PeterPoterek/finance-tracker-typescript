@@ -95,6 +95,45 @@ export const addExpense = createAsyncThunk(
   }
 );
 
+export const updateExpense = createAsyncThunk(
+  "expenses/updateExpense",
+  async (
+    {
+      id,
+      updatedExpenseData,
+    }: { id: string; updatedExpenseData: Partial<AddExpenseRequest> },
+    { getState, rejectWithValue }
+  ) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      const response = await axiosPrivateInstance.patch(
+        `/api/expenses/${id}`,
+        updatedExpenseData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data.expense;
+    } catch (error: any) {
+      console.error("Error updating expense:", error);
+      if (error.response && error.response.data) {
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
 const expensesSlice = createSlice({
   name: "expenses",
   initialState: initialExpensesState,

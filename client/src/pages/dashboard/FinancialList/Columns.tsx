@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { FinancialEntry } from "../../../services/schemas/formSchemas";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
+//#region  shadcn imports
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -19,18 +20,23 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Toaster } from "@/components/ui/toaster";
+//#endregion
+
 import { useToast } from "@/components/ui/use-toast";
-
 import { useState } from "react";
-
-// const handleClick = (transaction: FinancialEntry) => {
-//   console.log(transaction);
-// };
+import useCategories from "@/hooks/useCategories";
 
 export const Columns: ColumnDef<FinancialEntry>[] = [
   {
@@ -138,22 +144,31 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     cell: ({ row }) => {
       const transaction = row.original;
       const [isDialogOpen, setIsDialogOpen] = useState(false);
-      const [description, setDescription] = useState(transaction.description);
-      const { toast } = useToast();
 
+      const [transactionDescription, setTransactionDescription] = useState(
+        transaction.description
+      );
       const [transactionValue, setTransactionValue] = useState(
         transaction.value
       );
+      const [transactionCategory, setTransactionCategory] = useState(
+        transaction.category
+      );
+
+      const { toast } = useToast();
+
+      const { expenseCategories, incomeCategories } = useCategories();
+      const [selectCategories, setSelectCategories] = useState<string[]>([]);
+
       const [action, setAction] = useState<"edit" | "delete" | null>(null);
 
       const handleEdit = async () => {
         try {
           console.log(transaction);
-          console.log(description, transactionValue);
 
           toast({
             title: `Edited transaction 📝`,
-            description: `Sucesfully edited ${transaction.description} detials`,
+            description: `Sucesfully edited ${transaction.description}`,
           });
         } catch (error) {
           console.error("Error updating transaction:", error);
@@ -174,6 +189,14 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       };
 
       const openDialog = (selectedAction: "edit" | "delete") => {
+        setTransactionCategory(transaction.category);
+
+        console.log(transactionCategory);
+
+        transaction.type === "expense"
+          ? setSelectCategories(expenseCategories)
+          : setSelectCategories(incomeCategories);
+
         setAction(selectedAction);
         setIsDialogOpen(true);
       };
@@ -195,8 +218,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                 </Label>
                 <Input
                   id="description"
-                  value={description}
-                  onChange={e => setDescription(e.target.value)}
+                  value={transactionDescription}
+                  onChange={e => setTransactionDescription(e.target.value)}
                   className="col-span-3"
                 />
               </div>
@@ -213,6 +236,27 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
                   onChange={e => setTransactionValue(Number(e.target.value))}
                   className="col-span-3"
                 />
+              </div>
+              <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="transactionCategory" className="text-right">
+                  Category
+                </Label>
+                <Select>
+                  <SelectTrigger className="w-[277.25px]">
+                    <SelectValue placeholder={transactionCategory} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {selectCategories.map(category => {
+                        return (
+                          <SelectItem value={category} key={category}>
+                            {category}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               </div>
             </div>
             <DialogFooter>
