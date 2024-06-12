@@ -11,15 +11,23 @@ interface Income {
   createdAt: Date;
 }
 
-interface IncomesState {
-  incomes: Income[];
-  loading: boolean;
-  error: string | null;
-}
 interface AddIncomeRequest {
   description: string;
   value: number;
   category: string;
+}
+
+interface UpdateIncomeRequest {
+  id: string;
+  description?: string;
+  value?: number;
+  category?: string;
+}
+
+interface IncomesState {
+  incomes: Income[];
+  loading: boolean;
+  error: string | null;
 }
 
 const initialIncomesState: IncomesState = {
@@ -61,7 +69,7 @@ export const fetchIncomes = createAsyncThunk(
 
 export const addIncome = createAsyncThunk(
   "incomes/addIncome",
-  async (incomeDate: AddIncomeRequest, { getState, rejectWithValue }) => {
+  async (incomeData: AddIncomeRequest, { getState, rejectWithValue }) => {
     try {
       const state = getState() as RootState;
       const accessToken = state.auth.accessToken;
@@ -72,7 +80,7 @@ export const addIncome = createAsyncThunk(
 
       const response = await axiosPrivateInstance.post(
         "/api/incomes/",
-        incomeDate,
+        incomeData,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -82,7 +90,104 @@ export const addIncome = createAsyncThunk(
 
       return response.data.income;
     } catch (error: any) {
-      console.error("Error adding Income:", error);
+      console.error("Error adding income:", error);
+      if (error.response && error.response.data) {
+        console.error(error.response);
+
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
+export const getIncomeById = createAsyncThunk(
+  "incomes/getIncomeById",
+  async (id: string, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      const response = await axiosPrivateInstance.get(`/api/incomes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      return response.data.income;
+    } catch (error: any) {
+      console.error("Error fetching income:", error);
+      if (error.response && error.response.data) {
+        console.error(error.response);
+
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
+export const updateIncome = createAsyncThunk(
+  "incomes/updateIncome",
+  async (incomeData: UpdateIncomeRequest, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      const response = await axiosPrivateInstance.put(
+        `/api/incomes/${incomeData.id}`,
+        incomeData,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      );
+
+      return response.data.income;
+    } catch (error: any) {
+      console.error("Error updating income:", error);
+      if (error.response && error.response.data) {
+        console.error(error.response);
+
+        return rejectWithValue(error.response.data);
+      } else {
+        return rejectWithValue({ error: "Network Error" });
+      }
+    }
+  }
+);
+
+export const deleteIncome = createAsyncThunk(
+  "incomes/deleteIncome",
+  async (id: string, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as RootState;
+      const accessToken = state.auth.accessToken;
+
+      if (!accessToken) {
+        throw new Error("No access token available");
+      }
+
+      await axiosPrivateInstance.delete(`/api/incomes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      return id;
+    } catch (error: any) {
+      console.error("Error deleting income:", error);
       if (error.response && error.response.data) {
         console.error(error.response);
 
@@ -119,6 +224,81 @@ const incomesSlice = createSlice({
         }
       )
       .addCase(fetchIncomes.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(addIncome.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addIncome.fulfilled, (state, action: PayloadAction<Income>) => {
+        state.loading = false;
+        state.incomes.push(action.payload);
+        state.error = null;
+      })
+      .addCase(addIncome.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(getIncomeById.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        getIncomeById.fulfilled,
+        (state, action: PayloadAction<Income>) => {
+          state.loading = false;
+          const index = state.incomes.findIndex(
+            inc => inc.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.incomes[index] = action.payload;
+          } else {
+            state.incomes.push(action.payload);
+          }
+          state.error = null;
+        }
+      )
+      .addCase(getIncomeById.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(updateIncome.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        updateIncome.fulfilled,
+        (state, action: PayloadAction<Income>) => {
+          state.loading = false;
+          const index = state.incomes.findIndex(
+            inc => inc.id === action.payload.id
+          );
+          if (index !== -1) {
+            state.incomes[index] = action.payload;
+          }
+          state.error = null;
+        }
+      )
+      .addCase(updateIncome.rejected, (state, action: PayloadAction<any>) => {
+        state.loading = false;
+        state.error = action.payload.error;
+      })
+      .addCase(deleteIncome.pending, state => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(
+        deleteIncome.fulfilled,
+        (state, action: PayloadAction<string>) => {
+          state.loading = false;
+          state.incomes = state.incomes.filter(
+            inc => inc.id !== action.payload
+          );
+          state.error = null;
+        }
+      )
+      .addCase(deleteIncome.rejected, (state, action: PayloadAction<any>) => {
         state.loading = false;
         state.error = action.payload.error;
       });
