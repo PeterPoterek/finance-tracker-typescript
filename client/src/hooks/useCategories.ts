@@ -4,7 +4,7 @@ import { AppDispatch, RootState } from "@/redux/store/store";
 import { fetchCategories } from "@/redux/slices/categoriesSlice";
 
 const useCategories = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch: AppDispatch = useDispatch();
   const { expenseCategories, incomeCategories } = useSelector(
     (state: RootState) => state.categories
   );
