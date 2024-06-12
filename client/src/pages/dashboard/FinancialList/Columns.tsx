@@ -37,6 +37,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { useState, useEffect } from "react";
 import useCategories from "@/hooks/useCategories";
 import useExpenses from "@/hooks/useExpenses";
+import useIncomes from "@/hooks/useIncomes";
 
 export const Columns: ColumnDef<FinancialEntry>[] = [
   {
@@ -158,6 +159,8 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       const { toast } = useToast();
       const { updateExpenseData, fetchExpensesData, deleteExpenseData } =
         useExpenses();
+      const { updateIncomeData, fetchIncomesData, deleteIncomeData } =
+        useIncomes();
 
       const { expenseCategories, incomeCategories } = useCategories();
       const [selectCategories, setSelectCategories] = useState<string[]>([]);
@@ -182,18 +185,22 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
 
       const handleEdit = async () => {
         try {
-          const updatedExpenseData = {
+          const updatedTransactionData = {
             description: transactionDescription,
             value: transactionValue,
             category: transactionCategory,
           };
 
           if (transaction._id) {
-            await updateExpenseData(transaction._id, updatedExpenseData);
+            if (transaction.type === "expense") {
+              await updateExpenseData(transaction._id, updatedTransactionData);
+            } else if (transaction.type === "income") {
+              await updateIncomeData(transaction._id, updatedTransactionData);
+            }
 
             toast({
-              title: `Edited transaction 📝`,
-              description: `Successfully edited ${transaction.description}`,
+              title: `Edited transaction `,
+              description: `Successfully edited ${transaction.description} `,
             });
           } else {
             console.error("Transaction ID is undefined");
@@ -201,24 +208,36 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
         } catch (error) {
           console.error("Error updating transaction:", error);
         } finally {
-          fetchExpensesData();
+          if (transaction.type === "expense") {
+            fetchExpensesData();
+          } else if (transaction.type === "income") {
+            fetchIncomesData();
+          }
           setIsDialogOpen(false);
         }
       };
-
-      const handleDelete = async (transaction: FinancialEntry) => {
+      const handleDelete = async () => {
         try {
           if (transaction._id) {
-            deleteExpenseData(transaction._id);
+            if (transaction.type === "expense") {
+              await deleteExpenseData(transaction._id);
+            } else if (transaction.type === "income") {
+              await deleteIncomeData(transaction._id);
+            }
+
+            toast({
+              title: `Deleted transaction🗑️`,
+              description: `Successfully deleted ${transaction.description}`,
+            });
           }
-          toast({
-            title: `Deleted transaction 🗑️`,
-            description: `Sucesfully deleted ${transaction.description}`,
-          });
         } catch (error) {
-          console.error("Error updating transaction:", error);
+          console.error("Error deleting transaction:", error);
         } finally {
-          fetchExpensesData();
+          if (transaction.type === "expense") {
+            fetchExpensesData();
+          } else if (transaction.type === "income") {
+            fetchIncomesData();
+          }
           setIsDialogOpen(false);
         }
       };
@@ -309,7 +328,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             </DialogHeader>
             <DialogFooter>
               <Button onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-              <Button onClick={() => handleDelete(transaction)}>Confirm</Button>
+              <Button onClick={() => handleDelete()}>Confirm</Button>
             </DialogFooter>
           </>
         );
