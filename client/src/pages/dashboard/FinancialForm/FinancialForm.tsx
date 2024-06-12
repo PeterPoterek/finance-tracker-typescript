@@ -28,6 +28,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { useToast } from "@/components/ui/use-toast";
 //#endregion
 
 import {
@@ -53,6 +54,7 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
   const { expenseCategories, incomeCategories } = useCategories();
   const { fetchExpensesData, addExpenseData } = useExpenses();
   const { fetchIncomesData, addIncomeData } = useIncomes();
+  const { toast } = useToast();
 
   const defaultValues = {
     description: "",
@@ -67,17 +69,30 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
     defaultValues,
   });
 
-  const onSubmit = (values: FinancialEntry) => {
+  const onSubmit = async (values: FinancialEntry) => {
     values.type = view;
     console.log(values);
     form.reset(defaultValues);
 
-    if (view === "expense") {
-      addExpenseData(values);
-      fetchExpensesData();
-    } else {
-      addIncomeData(values);
-      fetchIncomesData();
+    try {
+      if (view === "expense") {
+        await addExpenseData(values);
+      } else {
+        await addIncomeData(values);
+      }
+
+      if (view === "expense") {
+        fetchExpensesData();
+      } else {
+        fetchIncomesData();
+      }
+
+      toast({
+        title: `Added ${view === "expense" ? "Expense" : "Income"} ✔️`,
+        description: `Successfully added ${values.description}`,
+      });
+    } catch (error) {
+      console.error("Error adding financial entry:", error);
     }
   };
 
