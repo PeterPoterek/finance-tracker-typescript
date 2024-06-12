@@ -112,7 +112,7 @@ export const updateExpense = createAsyncThunk(
         throw new Error("No access token available");
       }
 
-      const response = await axiosPrivateInstance.patch(
+      const response = await axiosPrivateInstance.put(
         `/api/expenses/${id}`,
         updatedExpenseData,
         {

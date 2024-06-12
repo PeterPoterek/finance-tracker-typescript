@@ -13,7 +13,7 @@ const expenseRouter = Router();
 expenseRouter.get("/", verifyJWT, getAllExpenses);
 expenseRouter.post("/", verifyJWT, addExpense);
 expenseRouter.get("/:id", verifyJWT, getExpenseById);
-expenseRouter.patch("/:id", verifyJWT, updateExpense);
+expenseRouter.put("/:id", verifyJWT, updateExpense);
 expenseRouter.delete("/:id", verifyJWT, deleteExpense);
 
 export default expenseRouter;
