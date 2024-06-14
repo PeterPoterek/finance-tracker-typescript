@@ -10,8 +10,10 @@ const useCategories = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, [dispatch]);
+    if (expenseCategories.length === 0 && incomeCategories.length === 0) {
+      dispatch(fetchCategories());
+    }
+  }, [dispatch, expenseCategories.length, incomeCategories.length]);
 
   return { expenseCategories, incomeCategories };
 };

@@ -199,7 +199,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
             }
 
             toast({
-              title: `Edited transaction `,
+              title: `Edited transaction 📝`,
               description: `Successfully edited ${transaction.description} `,
             });
           } else {
@@ -243,8 +243,6 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
       };
       const openDialog = (selectedAction: "edit" | "delete") => {
         setTransactionCategory(transaction.category);
-
-        console.log(transactionCategory);
 
         transaction.type === "expense"
           ? setSelectCategories(expenseCategories)
