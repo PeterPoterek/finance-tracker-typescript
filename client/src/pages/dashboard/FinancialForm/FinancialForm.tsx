@@ -77,19 +77,22 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
     try {
       if (view === "expense") {
         await addExpenseData(values);
+        fetchExpensesData();
       } else {
         await addIncomeData(values);
+        fetchIncomesData();
       }
-
-      fetchExpensesData();
-      fetchIncomesData();
 
       toast({
         title: `Added ${view === "expense" ? "Expense" : "Income"} ✔️`,
         description: `Successfully added ${values.description}`,
       });
     } catch (error) {
-      console.error("Error adding financial entry:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: `${error}`,
+      });
     }
   };
 
