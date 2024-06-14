@@ -90,8 +90,6 @@ export const getCurrentUser = createAsyncThunk(
         },
       });
 
-      console.log(response.data);
-
       return response.data;
     } catch (error: any) {
       if (error.response && error.response.data) {

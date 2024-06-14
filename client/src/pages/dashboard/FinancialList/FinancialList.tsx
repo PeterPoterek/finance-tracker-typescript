@@ -22,8 +22,6 @@ const FinancialList = () => {
       try {
         fetchExpensesData();
         fetchIncomesData();
-
-        console.log("Fetch table data");
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }

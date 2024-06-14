@@ -7,7 +7,9 @@ const useRefreshToken = () => {
 
   const refresh = async () => {
     try {
-      const token = await dispatch(getRefreshAccessToken()).unwrap();
+      const token = await dispatch(getRefreshAccessToken());
+      console.log(token);
+
       return token;
     } catch (error) {
       dispatch(logoutUser());

@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/redux/slices/userSlice";
 import { AppDispatch } from "@/redux/store/store";
 import { useDispatch } from "react-redux";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import { useEffect } from "react";
 
 import useUser from "@/hooks/useUser";
 import useAuth from "@/hooks/useAuth";
+import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();

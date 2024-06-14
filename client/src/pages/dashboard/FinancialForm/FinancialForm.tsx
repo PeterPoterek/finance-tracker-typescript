@@ -77,10 +77,8 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
     try {
       if (view === "expense") {
         await addExpenseData(values);
-        fetchExpensesData();
       } else {
         await addIncomeData(values);
-        fetchIncomesData();
       }
 
       toast({
@@ -93,6 +91,9 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
         title: "Uh oh! Something went wrong.",
         description: `${error}`,
       });
+    } finally {
+      fetchExpensesData();
+      fetchIncomesData();
     }
   };
 
