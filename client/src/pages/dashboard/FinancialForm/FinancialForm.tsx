@@ -81,11 +81,8 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
         await addIncomeData(values);
       }
 
-      if (view === "expense") {
-        fetchExpensesData();
-      } else {
-        fetchIncomesData();
-      }
+      fetchExpensesData();
+      fetchIncomesData();
 
       toast({
         title: `Added ${view === "expense" ? "Expense" : "Income"} ✔️`,
