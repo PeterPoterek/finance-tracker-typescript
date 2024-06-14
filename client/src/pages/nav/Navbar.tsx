@@ -1,9 +1,7 @@
-import { useState, useEffect } from "react";
+//#region shadcn imports
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/components/ui/theme-provider";
 import { useNavigate } from "react-router-dom";
-
-//#region shadcn imports
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -25,9 +23,9 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 //#endregion
-
 import useAuth from "@/hooks/useAuth";
 import useUser from "@/hooks/useUser";
+import { useState, useEffect } from "react";
 
 type Theme = "light" | "dark" | "system";
 
@@ -38,7 +36,6 @@ const Navbar = () => {
 
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
-
   const { username, avatarURL } = useUser();
 
   useEffect(() => {
@@ -80,10 +77,8 @@ const Navbar = () => {
             checked={currentTheme === "dark"}
             onCheckedChange={toggleTheme}
           />
-
           <div className="flex gap-2.5 items-center">
             <p>{username}</p>
-
             <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <AlertDialogContent>
                 <AlertDialogHeader>
@@ -101,7 +96,6 @@ const Navbar = () => {
                   </AlertDialogAction>
                 </AlertDialogFooter>
               </AlertDialogContent>
-
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Avatar className="cursor-pointer hover:scale-105 transition-transform duration-300">
@@ -117,22 +111,21 @@ const Navbar = () => {
                       className="cursor-pointer"
                       onClick={() => handleNavigate("/account")}
                     >
-                      Profile
+                      👤 Profile
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="cursor-pointer"
                       onClick={() => handleNavigate("/dashboard")}
                     >
-                      Finance Tracker
+                      💼 Finance Tracker
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
-
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     className="cursor-pointer"
                     onSelect={() => setIsDialogOpen(true)}
                   >
-                    Log out
+                    🚪 Log out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
