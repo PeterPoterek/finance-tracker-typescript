@@ -136,7 +136,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     },
     cell: ({ row }) => {
       const date = new Date(row.original.createdAt);
-      const dateFormatted = format(date, "dd.MM.yy");
+      const dateFormatted = format(date, "dd.MM.yyyy");
       return <div className="font-medium">{dateFormatted}</div>;
     },
   },
