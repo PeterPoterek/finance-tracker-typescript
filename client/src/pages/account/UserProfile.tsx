@@ -48,7 +48,7 @@ const UserProfile = () => {
   }, [dispatch, axiosPrivate]);
 
   return (
-    <div className="pt-20 flex justify-center items-center">
+    <div className="pt-20 flex justify-center items-center flex-col">
       <Card className="w-full max-w-md">
         <CardHeader>
           <div className="flex items-center justify-between w-full">
@@ -128,7 +128,7 @@ const UserProfile = () => {
         </CardFooter>
       </Card>
 
-      <div></div>
+      <div>{/* Chart */}</div>
     </div>
   );
 };
