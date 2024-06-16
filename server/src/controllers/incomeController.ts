@@ -21,7 +21,7 @@ export const getAllIncomes = async (req: Request, res: Response) => {
 
 export const addIncome = async (req: Request, res: Response) => {
   try {
-    const { description, value, category } = req.body;
+    const { description, value, category, createdAt } = req.body;
     const userId = req.user?.userId;
 
     const incomeData = incomeSchemaDefinition.parse({
@@ -29,6 +29,7 @@ export const addIncome = async (req: Request, res: Response) => {
       value,
       category,
       type: "income",
+      createdAt: new Date(createdAt),
     });
 
     if (!userId) {
@@ -41,6 +42,7 @@ export const addIncome = async (req: Request, res: Response) => {
       value: incomeData.value,
       category: incomeData.category,
       type: "income",
+      createdAt: incomeData.createdAt,
     });
 
     await newIncome.save();

@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { FinancialEntry } from "../../../services/schemas/formSchemas";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { format } from "date-fns";
 
 //#region  shadcn imports
 import { Button } from "@/components/ui/button";
@@ -135,7 +136,7 @@ export const Columns: ColumnDef<FinancialEntry>[] = [
     },
     cell: ({ row }) => {
       const date = new Date(row.original.createdAt);
-      const dateFormatted = date.toLocaleDateString();
+      const dateFormatted = format(date, "dd.MM.yy");
       return <div className="font-medium">{dateFormatted}</div>;
     },
   },

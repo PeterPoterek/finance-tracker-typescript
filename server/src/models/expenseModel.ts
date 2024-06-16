@@ -9,6 +9,7 @@ const expenseSchemaDefinition = z.object({
   value: z.number().positive(),
   category: expenseCategoriesEnum,
   type: z.literal("expense"),
+  createdAt: z.date().default(new Date()),
 });
 
 interface ExpenseSchema extends Document {

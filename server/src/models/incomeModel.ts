@@ -9,6 +9,7 @@ const incomeSchemaDefinition = z.object({
   value: z.number().positive(),
   category: incomeCategoriesEnum,
   type: z.literal("income"),
+  createdAt: z.date().default(new Date()),
 });
 
 interface IncomeSchema extends Document {

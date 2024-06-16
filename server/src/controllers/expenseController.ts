@@ -21,14 +21,18 @@ export const getAllExpenses = async (req: Request, res: Response) => {
 
 export const addExpense = async (req: Request, res: Response) => {
   try {
-    const { description, value, category } = req.body;
+    const { description, value, category, createdAt } = req.body;
     const userId = req.user?.userId;
+
+    console.log(createdAt);
+    console.log(typeof createdAt);
 
     const expenseData = expenseSchemaDefinition.parse({
       description,
       value,
       category,
       type: "expense",
+      createdAt: new Date(createdAt),
     });
 
     if (!userId) {
@@ -41,6 +45,7 @@ export const addExpense = async (req: Request, res: Response) => {
       value: expenseData.value,
       category: expenseData.category,
       type: "expense",
+      createdAt: expenseData.createdAt,
     });
 
     await newExpense.save();

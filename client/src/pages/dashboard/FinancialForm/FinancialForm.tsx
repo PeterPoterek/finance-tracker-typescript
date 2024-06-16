@@ -71,14 +71,15 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
 
   const onSubmit = async (values: FinancialEntry) => {
     values.type = view;
+    values.createdAt = new Date(values.createdAt);
     console.log(values);
     form.reset(defaultValues);
 
     try {
       if (view === "expense") {
-        await addExpenseData(values);
+        addExpenseData(values);
       } else {
-        await addIncomeData(values);
+        addIncomeData(values);
       }
 
       toast({
@@ -228,7 +229,11 @@ const FinancialForm: React.FC<FinancialFormProps> = ({ view }) => {
                     <Calendar
                       mode="single"
                       selected={field.value}
-                      onSelect={field.onChange}
+                      onSelect={date => {
+                        if (date) {
+                          field.onChange(date);
+                        }
+                      }}
                       disabled={date =>
                         date > new Date() || date < new Date("1900-01-01")
                       }
