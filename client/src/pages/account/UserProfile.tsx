@@ -33,7 +33,7 @@ const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
   const axiosPrivate = useAxiosPrivate();
   const user = useUser();
-  const auth = useAuth();
+  // const auth = useAuth();
 
   useEffect(() => {
     const fetchUser = async () => {
