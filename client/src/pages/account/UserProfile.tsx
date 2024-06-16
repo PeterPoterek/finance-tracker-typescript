@@ -26,7 +26,7 @@ import { Separator } from "@/components/ui/separator";
 import { AppDispatch } from "@/redux/store/store";
 import { getCurrentUser } from "@/redux/slices/userSlice";
 import useUser from "@/hooks/useUser";
-import useAuth from "@/hooks/useAuth";
+// import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 const UserProfile = () => {
