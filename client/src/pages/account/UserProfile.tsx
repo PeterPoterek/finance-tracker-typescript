@@ -28,6 +28,7 @@ import { getCurrentUser } from "@/redux/slices/userSlice";
 import useUser from "@/hooks/useUser";
 // import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
+import DataChart from "./DataChart";
 
 const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,87 +49,93 @@ const UserProfile = () => {
   }, [dispatch, axiosPrivate]);
 
   return (
-    <div className="pt-20 flex justify-center items-center flex-col">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <div className="flex items-center justify-between w-full">
-            <div>
-              <CardTitle>My Account</CardTitle>
-              <CardDescription>Manage your account information</CardDescription>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <Avatar>
-              <AvatarImage src={user.avatarURL} />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-
-            <label className="cursor-pointer text-teal-400">
-              <input type="file" className="hidden" accept="image/*" />
-              Upload Image
-            </label>
-          </div>
-          <Separator />
-
-          <div>
-            <Label>Username</Label>
-            <p className="text-lg font-medium">{user.username}</p>
-          </div>
-          <div>
-            <Label>Email</Label>
-            <p className="text-lg font-medium">{user.email}</p>
-          </div>
-          <Separator />
-        </CardContent>
-        <CardFooter className="flex justify-center gap-5">
-          <Button variant="outline">Forgot password</Button>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline">Edit Profile</Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Edit Profile</DialogTitle>
-                <DialogDescription>
-                  Make changes to your profile here. Click save when you're
-                  done.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="username" className="text-right">
-                    Username
-                  </Label>
-                  <Input
-                    id="username"
-                    defaultValue={user.username}
-                    className="col-span-3"
-                  />
-                </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="email" className="text-right">
-                    Email
-                  </Label>
-
-                  <Input
-                    id="email"
-                    defaultValue={user.email}
-                    className="col-span-3"
-                  />
-                </div>
+    <div className="pt-20 flex justify-center items-center flex-col gap-[5rem]">
+      <div>
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <div className="flex items-center justify-between w-full">
+              <div>
+                <CardTitle>My Account</CardTitle>
+                <CardDescription>
+                  Manage your account information
+                </CardDescription>
               </div>
-              <DialogFooter>
-                <Button type="submit">Save changes</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </CardFooter>
-      </Card>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center space-x-4">
+              <Avatar>
+                <AvatarImage src={user.avatarURL} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
 
-      <div>{/* Chart */}</div>
+              <label className="cursor-pointer text-teal-400">
+                <input type="file" className="hidden" accept="image/*" />
+                Upload Image
+              </label>
+            </div>
+            <Separator />
+
+            <div>
+              <Label>Username</Label>
+              <p className="text-lg font-medium">{user.username}</p>
+            </div>
+            <div>
+              <Label>Email</Label>
+              <p className="text-lg font-medium">{user.email}</p>
+            </div>
+            <Separator />
+          </CardContent>
+          <CardFooter className="flex justify-center gap-5">
+            <Button variant="outline">Forgot password</Button>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline">Edit Profile</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Edit Profile</DialogTitle>
+                  <DialogDescription>
+                    Make changes to your profile here. Click save when you're
+                    done.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="username" className="text-right">
+                      Username
+                    </Label>
+                    <Input
+                      id="username"
+                      defaultValue={user.username}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="email" className="text-right">
+                      Email
+                    </Label>
+
+                    <Input
+                      id="email"
+                      defaultValue={user.email}
+                      className="col-span-3"
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button type="submit">Save changes</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </CardFooter>
+        </Card>
+      </div>
+
+      <div className="">
+        <DataChart />
+      </div>
     </div>
   );
 };
