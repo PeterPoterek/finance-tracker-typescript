@@ -49,7 +49,7 @@ const UserProfile = () => {
   }, [dispatch, axiosPrivate]);
 
   return (
-    <div className="pt-20 flex justify-center items-center flex-col gap-[5rem]">
+    <div className="pt-20 flex justify-center items-center flex-col gap-5">
       <div>
         <Card className="w-full max-w-md">
           <CardHeader>

@@ -109,15 +109,15 @@ const Navbar = () => {
                   <DropdownMenuGroup>
                     <DropdownMenuItem
                       className="cursor-pointer"
-                      onClick={() => handleNavigate("/account")}
-                    >
-                      👤 Profile
-                    </DropdownMenuItem>
-                    <DropdownMenuItem
-                      className="cursor-pointer"
                       onClick={() => handleNavigate("/dashboard")}
                     >
                       💼 Finance Tracker
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      className="cursor-pointer"
+                      onClick={() => handleNavigate("/account")}
+                    >
+                      👤 Profile
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                   <DropdownMenuSeparator />
