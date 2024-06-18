@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+
+//#region shadcn imports
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +24,8 @@ import {
 } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+//#endregion
 
 import { AppDispatch } from "@/redux/store/store";
 import { getCurrentUser } from "@/redux/slices/userSlice";
@@ -48,6 +52,12 @@ const UserProfile = () => {
 
     fetchUser();
   }, [dispatch, axiosPrivate]);
+
+  const [selectedChartView, setSelectedChartView] = useState("barchart");
+
+  const toggleChartView = (view: string) => {
+    setSelectedChartView(view);
+  };
 
   return (
     <div className="pt-[6rem] flex justify-center items-center flex-col gap-5">
@@ -134,9 +144,37 @@ const UserProfile = () => {
         </Card>
       </div>
 
+      <div className="p-5">
+        <RadioGroup className="flex gap-5" defaultValue="barchart">
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="barchart"
+              id="r2"
+              onClick={() => {
+                toggleChartView("barchart");
+              }}
+            />
+            <Label htmlFor="r2" className="text-base cursor-pointer">
+              Bar Chart
+            </Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="piechart"
+              id="r1"
+              onClick={() => {
+                toggleChartView("piechart");
+              }}
+            />
+            <Label htmlFor="r1" className="text-base cursor-pointer ">
+              Pie Chart
+            </Label>
+          </div>
+        </RadioGroup>
+      </div>
+
       <div className="">
-        {/* <BarChart /> */}
-        <PieChart />
+        {selectedChartView === "barchart" ? <BarChart /> : <PieChart />}
       </div>
     </div>
   );
