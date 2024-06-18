@@ -5,11 +5,12 @@ import useCategories from "@/hooks/useCategories";
 import useExpenses from "@/hooks/useExpenses";
 import useIncomes from "@/hooks/useIncomes";
 
+import { Button } from "@/components/ui/button";
+
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const PieChart = () => {
   const { expenseCategories, incomeCategories } = useCategories();
-
   const { expenses } = useExpenses();
   const { incomes } = useIncomes();
 
@@ -17,47 +18,47 @@ const PieChart = () => {
     Array(expenseCategories.length).fill(0)
   );
   const [incomeCategoriesTotal, setIncomeCategoriesTotal] = useState(
-    Array(expenseCategories.length).fill(0)
+    Array(incomeCategories.length).fill(0)
   );
+  const [selectedType, setSelectedType] = useState("expense");
 
-  const calculateCategoryTotal = (type: string) => {
-    if (type === "expense") {
-      const expensesTotal = Array(expenseCategories.length).fill(0);
+  const calculateCategoryTotal = () => {
+    const expensesTotal = Array(expenseCategories.length).fill(0);
+    expenses.forEach(expense => {
+      const categoryIndex = expenseCategories.indexOf(expense.category);
+      if (categoryIndex > -1) {
+        expensesTotal[categoryIndex] += expense.value;
+      }
+    });
+    setExpenseCategoriesTotal(expensesTotal);
 
-      expenses.forEach(expense => {
-        const categoryIndex = expenseCategories.indexOf(expense.category);
-
-        if (categoryIndex > -1) {
-          expensesTotal[categoryIndex] += expense.value;
-        }
-      });
-
-      setExpenseCategoriesTotal(expensesTotal);
-    } else {
-      const incomesTotal = Array(incomeCategories.length).fill(0);
-
-      incomes.forEach(income => {
-        const categoryIndex = incomeCategories.indexOf(income.category);
-
-        if (categoryIndex > -1) {
-          incomesTotal[categoryIndex] += income.value;
-        }
-      });
-
-      setIncomeCategoriesTotal(incomesTotal);
-    }
+    const incomesTotal = Array(incomeCategories.length).fill(0);
+    incomes.forEach(income => {
+      const categoryIndex = incomeCategories.indexOf(income.category);
+      if (categoryIndex > -1) {
+        incomesTotal[categoryIndex] += income.value;
+      }
+    });
+    setIncomeCategoriesTotal(incomesTotal);
   };
 
   useEffect(() => {
-    calculateCategoryTotal("income");
+    calculateCategoryTotal();
   }, [expenses, incomes]);
 
+  const handleToggle = (type: string) => {
+    setSelectedType(type);
+  };
+
   const data = {
-    labels: incomeCategories,
+    labels: selectedType === "expense" ? expenseCategories : incomeCategories,
     datasets: [
       {
-        label: "Expenses",
-        data: incomeCategoriesTotal,
+        label: selectedType === "expense" ? "Expenses" : "Incomes",
+        data:
+          selectedType === "expense"
+            ? expenseCategoriesTotal
+            : incomeCategoriesTotal,
         backgroundColor: [
           "#F87171",
           "#FBBF24",
@@ -77,12 +78,35 @@ const PieChart = () => {
     plugins: {
       title: {
         display: true,
-        text: "Expense Distribution",
+        text:
+          selectedType === "expense"
+            ? "Expense Distribution"
+            : "Income Distribution",
       },
     },
   };
 
-  return <Pie data={data} options={options} width={550} height={300} />;
+  return (
+    <div className="flex flex-col gap-5 p-5">
+      <Pie data={data} options={options} width={550} height={300} />
+      <div className="flex gap-5 justify-center">
+        <Button
+          variant="secondary"
+          onClick={() => handleToggle("expense")}
+          disabled={selectedType === "expense"}
+        >
+          Show Expenses
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={() => handleToggle("income")}
+          disabled={selectedType === "income"}
+        >
+          Show Incomes
+        </Button>
+      </div>
+    </div>
+  );
 };
 
 export default PieChart;
