@@ -149,24 +149,24 @@ const UserProfile = () => {
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="barchart"
-              id="r2"
+              id="barchart"
               onClick={() => {
                 toggleChartView("barchart");
               }}
             />
-            <Label htmlFor="r2" className="text-base cursor-pointer">
+            <Label htmlFor="barchart" className="text-base cursor-pointer">
               Bar Chart
             </Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="piechart"
-              id="r1"
+              id="piechart"
               onClick={() => {
                 toggleChartView("piechart");
               }}
             />
-            <Label htmlFor="r1" className="text-base cursor-pointer ">
+            <Label htmlFor="piechart" className="text-base cursor-pointer ">
               Pie Chart
             </Label>
           </div>
