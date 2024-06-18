@@ -29,6 +29,7 @@ import useUser from "@/hooks/useUser";
 // import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import BarChart from "./BarChart";
+import PieChart from "./PieChart";
 
 const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -134,7 +135,8 @@ const UserProfile = () => {
       </div>
 
       <div className="">
-        <BarChart />
+        {/* <BarChart /> */}
+        <PieChart />
       </div>
     </div>
   );
