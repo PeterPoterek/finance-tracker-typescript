@@ -16,6 +16,9 @@ const PieChart = () => {
   const [expenseCategoriesTotal, setExpenseCategoriesTotal] = useState(
     Array(expenseCategories.length).fill(0)
   );
+  const [incomeCategoriesTotal, setIncomeCategoriesTotal] = useState(
+    Array(expenseCategories.length).fill(0)
+  );
 
   const calculateCategoryTotal = (type: string) => {
     if (type === "expense") {
@@ -30,19 +33,31 @@ const PieChart = () => {
       });
 
       setExpenseCategoriesTotal(expensesTotal);
+    } else {
+      const incomesTotal = Array(incomeCategories.length).fill(0);
+
+      incomes.forEach(income => {
+        const categoryIndex = incomeCategories.indexOf(income.category);
+
+        if (categoryIndex > -1) {
+          incomesTotal[categoryIndex] += income.value;
+        }
+      });
+
+      setIncomeCategoriesTotal(incomesTotal);
     }
   };
 
   useEffect(() => {
-    calculateCategoryTotal("expense");
-  }, [expenses]);
+    calculateCategoryTotal("income");
+  }, [expenses, incomes]);
 
   const data = {
-    labels: expenseCategories,
+    labels: incomeCategories,
     datasets: [
       {
         label: "Expenses",
-        data: expenseCategoriesTotal,
+        data: incomeCategoriesTotal,
         backgroundColor: [
           "#F87171",
           "#FBBF24",
