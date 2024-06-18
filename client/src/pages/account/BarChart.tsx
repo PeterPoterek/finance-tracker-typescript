@@ -22,7 +22,7 @@ ChartJS.register(
   Legend
 );
 
-const DataChart = () => {
+const BarChart = () => {
   const { expenses } = useExpenses();
   const { incomes } = useIncomes();
   const [monthlyExpenses, setMonthlyExpenses] = useState(Array(12).fill(0));
@@ -99,4 +99,4 @@ const DataChart = () => {
   return <Bar data={data} options={options} width={1200} height={400} />;
 };
 
-export default DataChart;
+export default BarChart;

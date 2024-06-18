@@ -28,7 +28,7 @@ import { getCurrentUser } from "@/redux/slices/userSlice";
 import useUser from "@/hooks/useUser";
 // import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
-import DataChart from "./DataChart";
+import BarChart from "./BarChart";
 
 const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -134,7 +134,7 @@ const UserProfile = () => {
       </div>
 
       <div className="">
-        <DataChart />
+        <BarChart />
       </div>
     </div>
   );
