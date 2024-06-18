@@ -25,6 +25,7 @@ ChartJS.register(
 const BarChart = () => {
   const { expenses } = useExpenses();
   const { incomes } = useIncomes();
+
   const [monthlyExpenses, setMonthlyExpenses] = useState(Array(12).fill(0));
   const [monthlyIncomes, setMonthlyIncomes] = useState(Array(12).fill(0));
 

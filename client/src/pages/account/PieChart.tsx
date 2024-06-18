@@ -2,26 +2,55 @@ import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from "chart.js";
 import { useEffect, useState } from "react";
 import useCategories from "@/hooks/useCategories";
+import useExpenses from "@/hooks/useExpenses";
+import useIncomes from "@/hooks/useIncomes";
 
 ChartJS.register(ArcElement, Tooltip, Legend, Title);
 
 const PieChart = () => {
   const { expenseCategories, incomeCategories } = useCategories();
 
+  const { expenses } = useExpenses();
+  const { incomes } = useIncomes();
+
+  const [expenseCategoriesTotal, setExpenseCategoriesTotal] = useState(
+    Array(expenseCategories.length).fill(0)
+  );
+
+  const calculateCategoryTotal = (type: string) => {
+    if (type === "expense") {
+      const expensesTotal = Array(expenseCategories.length).fill(0);
+
+      expenses.forEach(expense => {
+        const categoryIndex = expenseCategories.indexOf(expense.category);
+
+        if (categoryIndex > -1) {
+          expensesTotal[categoryIndex] += expense.value;
+        }
+      });
+
+      setExpenseCategoriesTotal(expensesTotal);
+    }
+  };
+
+  useEffect(() => {
+    calculateCategoryTotal("expense");
+  }, [expenses]);
+
   const data = {
-    labels: incomeCategories,
+    labels: expenseCategories,
     datasets: [
       {
         label: "Expenses",
-        data: [120, 60, 30, 90, 45],
+        data: expenseCategoriesTotal,
         backgroundColor: [
-          "#4ade80",
-          "#22c55e",
-          "#86efac",
-          "#16a34a",
-          "#10b981",
-          "#34d399",
-          "#10b981",
+          "#F87171",
+          "#FBBF24",
+          "#34D399",
+          "#60A5FA",
+          "#A78BFA",
+          "#F472B6",
+          "#C4B5FD",
         ],
         hoverOffset: 4,
       },
