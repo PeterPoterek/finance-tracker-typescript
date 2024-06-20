@@ -9,7 +9,6 @@ import { Label } from "@/components/ui/label";
 
 import { AppDispatch } from "@/redux/store/store";
 import { getCurrentUser } from "@/redux/slices/userSlice";
-// import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import BarChart from "./BarChart";
 import PieChart from "./PieChart";
@@ -18,7 +17,6 @@ import UserCard from "./UserCard";
 const UserProfile = () => {
   const dispatch = useDispatch<AppDispatch>();
   const axiosPrivate = useAxiosPrivate();
-  // const auth = useAuth();
 
   useEffect(() => {
     const fetchUser = async () => {
