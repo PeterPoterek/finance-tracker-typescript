@@ -27,38 +27,40 @@ const UserCard = () => {
   const user = useUser();
 
   return (
-    <Card className="w-full max-w-md">
+    <Card className="p-10">
       <CardHeader>
-        <div className="flex items-center justify-between w-full">
-          <div>
-            <CardTitle>My Account</CardTitle>
+        <div className="flex items-center justify-center w-full gap-5">
+          <div className="flex flex-col gap-2">
+            <CardTitle className="text-center">My Account</CardTitle>
             <CardDescription>Manage your account information</CardDescription>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="flex  gap-5">
         <div className="flex items-center space-x-4">
-          <Avatar>
-            <AvatarImage src={user.avatarURL} />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
+          <div className="flex flex-col justify-center items-center gap-2">
+            <Avatar>
+              <AvatarImage src={user.avatarURL} />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
 
-          <label className="cursor-pointer text-teal-400">
-            <input type="file" className="hidden" accept="image/*" />
-            Upload Image
-          </label>
+            <label className="cursor-pointer text-teal-400">
+              <input type="file" className="hidden" accept="image/*" />
+              Upload Image
+            </label>
+          </div>
         </div>
-        <Separator />
 
-        <div>
-          <Label>Username</Label>
-          <p className="text-lg font-medium">{user.username}</p>
+        <div className="flex gap-5 justify-between">
+          <div>
+            <Label>Username</Label>
+            <p className="text-lg font-medium">{user.username}</p>
+          </div>
+          <div>
+            <Label>Email</Label>
+            <p className="text-lg font-medium">{user.email}</p>
+          </div>
         </div>
-        <div>
-          <Label>Email</Label>
-          <p className="text-lg font-medium">{user.email}</p>
-        </div>
-        <Separator />
       </CardContent>
       <CardFooter className="flex justify-center gap-5">
         <Button variant="outline">Forgot password</Button>
