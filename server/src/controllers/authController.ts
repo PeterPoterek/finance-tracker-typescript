@@ -2,19 +2,7 @@ import { Request, Response } from "express";
 import { UserModel } from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-const colors = [
-  "F87171",
-  "FBBF24",
-  "34D399",
-  "60A5FA",
-  "818CF8",
-  "F472B6",
-  "F59E0B",
-  "10B981",
-  "3B82F6",
-  "6366F1",
-];
+import { getRandomColor } from "../utils/colors";
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET || "ACCESS_TOKEN_SECRET";
 const REFRESH_TOKEN_SECRET = process.env.REFRESH_TOKEN_SECRET || "REFRESH_TOKEN_SECRET";
@@ -25,11 +13,6 @@ interface MongoDBError extends Error {
     [key: string]: string;
   };
 }
-
-const getRandomColor = () => {
-  const randomIndex = Math.floor(Math.random() * colors.length);
-  return colors[randomIndex];
-};
 
 export const handleLogin = async (req: Request, res: Response) => {
   try {
