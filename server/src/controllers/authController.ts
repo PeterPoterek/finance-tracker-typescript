@@ -95,7 +95,7 @@ export const handleRegister = async (req: Request, res: Response) => {
     const randomColor = getRandomColor();
     const avatarURL = `https://ui-avatars.com/api/?name=${encodeURIComponent(
       username
-    )}&background=${randomColor}&color=fff`;
+    )}&background=${randomColor}&color=fff&format=png`;
 
     const newUser = new UserModel({
       username,
