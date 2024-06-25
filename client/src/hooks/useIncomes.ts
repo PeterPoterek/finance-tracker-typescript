@@ -30,29 +30,32 @@ interface UpdateIncomeRequest {
 }
 
 const useIncomes = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const incomes: Income[] = useSelector(
     (state: RootState) => state.incomes.incomes
   );
-  const dispatch = useDispatch<AppDispatch>();
 
   const fetchIncomesData = () => {
     dispatch(fetchIncomes());
   };
 
-  const addIncomeData = (incomeData: AddIncomeRequest) => {
-    dispatch(addIncome(incomeData));
+  const addIncomeData = async (incomeData: AddIncomeRequest) => {
+    await dispatch(addIncome(incomeData));
+    fetchIncomesData();
   };
 
-  const updateIncomeData = (
+  const updateIncomeData = async (
     id: string,
     updatedIncomeData: Partial<UpdateIncomeRequest>
   ) => {
-    dispatch(updateIncome({ id, ...updatedIncomeData }));
+    await dispatch(updateIncome({ id, ...updatedIncomeData }));
+    fetchIncomesData();
   };
 
   const deleteIncomeData = async (id: string) => {
     try {
       await dispatch(deleteIncome(id));
+      fetchIncomesData();
     } catch (error) {
       console.error("Error deleting income:", error);
     }

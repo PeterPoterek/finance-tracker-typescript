@@ -23,29 +23,32 @@ interface AddExpenseRequest {
 }
 
 const useExpenses = () => {
+  const dispatch: AppDispatch = useDispatch();
   const expenses: Expense[] = useSelector(
     (state: RootState) => state.expenses.expenses
   );
-  const dispatch = useDispatch<AppDispatch>();
 
   const fetchExpensesData = () => {
     dispatch(fetchExpenses());
   };
 
-  const addExpenseData = (expenseData: AddExpenseRequest) => {
-    dispatch(addExpense(expenseData));
+  const addExpenseData = async (expenseData: AddExpenseRequest) => {
+    await dispatch(addExpense(expenseData));
+    fetchExpensesData();
   };
 
-  const updateExpenseData = (
+  const updateExpenseData = async (
     id: string,
     updatedExpenseData: Partial<AddExpenseRequest>
   ) => {
-    dispatch(updateExpense({ id, updatedExpenseData }));
+    await dispatch(updateExpense({ id, updatedExpenseData }));
+    fetchExpensesData();
   };
 
   const deleteExpenseData = async (id: string) => {
     try {
       await dispatch(deleteExpense(id));
+      fetchExpensesData();
     } catch (error) {
       console.error("Error deleting expense:", error);
     }

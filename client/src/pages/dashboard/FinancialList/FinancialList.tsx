@@ -7,15 +7,12 @@ import { FinancialEntry } from "@/services/schemas/formSchemas";
 
 import useExpenses from "@/hooks/useExpenses";
 import useIncomes from "@/hooks/useIncomes";
-import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 
 const FinancialList = () => {
   const [financialData, setFinancialData] = useState<FinancialEntry[]>([]);
 
   const { expenses, fetchExpensesData } = useExpenses();
   const { incomes, fetchIncomesData } = useIncomes();
-
-  const axiosPrivate = useAxiosPrivate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +25,7 @@ const FinancialList = () => {
     };
 
     fetchData();
-  }, [axiosPrivate]);
+  }, []);
 
   useEffect(() => {
     const combineData = () => {
