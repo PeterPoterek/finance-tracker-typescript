@@ -89,9 +89,7 @@ const authSlice = createSlice({
       )
       .addCase(getRefreshAccessToken.rejected, state => {
         state.accessToken = null;
-        if (state.isLoggedIn) {
-          state.isLoggedIn = false;
-        }
+        state.isLoggedIn = false;
       })
       .addCase(logoutUser.fulfilled, state => {
         state.isLoggedIn = false;
