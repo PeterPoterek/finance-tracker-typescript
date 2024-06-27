@@ -1,5 +1,5 @@
-import { axiosPrivateInstance } from "@/lib/axiosInstance";
 import { useEffect, useRef } from "react";
+import { axiosPrivateInstance } from "@/lib/axiosInstance";
 import useRefreshToken from "./useRefreshToken";
 import useAuth from "./useAuth";
 import { useDispatch } from "react-redux";
@@ -26,14 +26,20 @@ const useAxiosPrivate = () => {
     const responseIntercept = axiosPrivateInstance.interceptors.response.use(
       response => response,
       async error => {
-        const prevRequest = error?.config;
-        if (error?.response?.status === 403 && !prevRequest?.sent) {
-          prevRequest.sent = true;
+        const originalRequest = error.config;
+        if (
+          error.response &&
+          error.response.status === 403 &&
+          !originalRequest._retry
+        ) {
+          originalRequest._retry = true;
           try {
             const newAccessToken = await refresh();
             if (newAccessToken) {
-              prevRequest.headers["Authorization"] = `Bearer ${newAccessToken}`;
-              return axiosPrivateInstance(prevRequest);
+              originalRequest.headers[
+                "Authorization"
+              ] = `Bearer ${newAccessToken}`;
+              return axiosPrivateInstance(originalRequest);
             } else {
               throw new Error("Failed to refresh access token");
             }
