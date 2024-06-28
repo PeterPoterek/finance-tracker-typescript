@@ -1,7 +1,4 @@
 import googleIcon from "../../assets/google.svg";
-
-// #region shadcn imports
-
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Card,
@@ -22,18 +19,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-//#endregion
-
+import { useToast } from "@/components/ui/use-toast";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   loginSchema,
   registerSchema,
 } from "../../services/schemas/validationSchemas.ts";
-
 import useAuth from "@/hooks/useAuth.ts";
+import { useEffect } from "react";
 
 interface LoginData {
   email: string;
@@ -48,7 +42,19 @@ interface RegisterData {
 }
 
 const AuthForm: React.FC = () => {
-  const { login, register } = useAuth();
+  const { login, register, error } = useAuth();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    if (error) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: error,
+      });
+      console.log(error);
+    }
+  }, [error, toast]);
 
   const loginForm = useForm<LoginData>({
     resolver: zodResolver(loginSchema),
@@ -67,6 +73,7 @@ const AuthForm: React.FC = () => {
       confirmPassword: "",
     },
   });
+
   const handleLogin: SubmitHandler<LoginData> = async data => {
     await login(data);
   };
@@ -74,12 +81,12 @@ const AuthForm: React.FC = () => {
   const handleRegister: SubmitHandler<RegisterData> = async data => {
     try {
       await register(data);
-
-      await login(data);
+      await login({ email: data.email, password: data.password });
     } catch (error) {
       console.error("Registration failed:", error);
     }
   };
+
   const handleGoogleLogin = async () => {};
 
   return (
