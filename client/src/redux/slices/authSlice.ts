@@ -26,7 +26,7 @@ export const getRefreshAccessToken = createAsyncThunk(
     } catch (error: any) {
       console.log(error.request.status, "error.request.status");
 
-      if (error.request.statu === 403) {
+      if (error.request.status === 403 || error.request.status === 401) {
         const response = await axiosPrivateInstance.get("/api/refresh");
         const { accessToken } = response.data;
         return accessToken;
